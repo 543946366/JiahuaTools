@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.jiahua.jiahuatools.ui.ShengJiActivity"
+    tools:showIn="@layout/activity_sheng_ji"
+    android:paddingBottom="5dp"
+    >
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="20dp"
+        >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_shengJi_log"
+            android:textSize="@dimen/content_text_size"
+            android:textColor="@color/mFontBlack" />
+
+    </LinearLayout>
+
+    <ProgressBar
+        style="@android:style/Widget.Holo.Light.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:id="@+id/pb_chuanSong_shengJi"
+        android:visibility="invisible"
+        />
+
+    <Button
+        android:text="@string/download_the_firmware"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_xiaZai_shengJi"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:background="@color/mBlue"
+        android:textColor="@color/mFontWhite"
+        android:textSize="24sp"
+        android:visibility="invisible"
+        />
+
+    <Button
+        android:text="@string/upgrade"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_shengJi"
+        android:background="@color/mBlue"
+        android:textColor="@color/mFontWhite"
+        android:textSize="24sp"
+        android:layout_margin="20dp"
+        android:visibility="invisible"
+        />
+</LinearLayout>

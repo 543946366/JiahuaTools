@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="sn">
+        <item>请选择</item>
+        <item>MT18280000</item>
+        <item>MT18450000</item>
+    </string-array>
+
+    <string-array name="hwid">
+        <item>请选择</item>
+        <item>MT1828V12</item>
+        <item>MT1845V12</item>
+    </string-array>
+
+    <string-array name="Mac">
+        <item>请选择</item>
+        <item>3c:33:00:00:00:</item>
+        <item>00:20:18:00:00:</item>
+    </string-array>
+
+    <string-array name="canControl">
+        <item>请选择</item>
+        <item>tja1041</item>
+        <item>tja1054</item>
+    </string-array>
+
+    <string-array name="modelName">
+        <item>请选择</item>
+        <item>4G-Nav</item>
+        <item>WiFi-Nav</item>
+    </string-array>
+</resources>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_stm32"
+        android:orderInCategory="100"
+        android:title="@string/dan_pian_ji_upgrade"
+        app:showAsAction="never"
+        />
+
+    <item
+        android:id="@+id/action_t3_system"
+        android:orderInCategory="100"
+        android:title="@string/system_upgrade"
+        app:showAsAction="never"
+        />
+
+    <item
+        android:id="@+id/action_t3_boot"
+        android:orderInCategory="100"
+        android:title="@string/nei_he_upgrade"
+        app:showAsAction="never"
+        />
+</menu>

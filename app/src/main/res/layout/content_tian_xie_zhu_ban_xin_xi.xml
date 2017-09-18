@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.jiahua.jiahuatools.ui.TianXieZhuBanXinXiActivity"
+    android:layout_margin="10dp"
+    tools:showIn="@layout/activity_tian_xie_zhu_ban_xin_xi">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="序列号："
+        android:textSize="12sp"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/et_TXZBXX_sn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="@string/serial_number"
+            android:inputType="textPersonName"
+            android:textSize="18sp" />
+        <Spinner
+            android:id="@+id/spinner_txzbxx_sn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+    </LinearLayout>
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="硬件版本号："
+        android:textSize="12sp"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/et_TXZBXX_hwid"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="@string/ying_jian_ban_ben"
+            android:inputType="textPersonName"
+            android:textSize="18sp" />
+        <Spinner
+            android:id="@+id/spinner_txzbxx_hwid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Mac地址："
+        android:textSize="12sp"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/et_TXZBXX_mac"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="@string/mac"
+            android:inputType="textPersonName"
+            android:textSize="18sp" />
+        <Spinner
+            android:id="@+id/spinner_txzbxx_mac"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="设备名："
+        android:textSize="12sp"
+        />
+
+    <LinearLayout
+        android:id="@+id/ll_txzbxx_modelName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/et_TXZBXX_model_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="设备名"
+            android:inputType="textPersonName"
+            android:textSize="18sp" />
+        <Spinner
+            android:id="@+id/spinner_txzbxx_model_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="can_controler："
+        android:textSize="12sp" />
+
+    <LinearLayout
+        android:id="@+id/ll_txzbxx_canControler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/et_TXZBXX_can_controler"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="can_controler"
+            android:inputType="textPersonName"
+            android:textSize="18sp" />
+        <Spinner
+            android:id="@+id/spinner_txzbxx_can_controler"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="软件版本号："
+        android:textSize="12sp"
+        />
+
+    <TextView
+        android:id="@+id/tv_TXZBXX_swid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/black"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="单片机版本："
+        android:textSize="12sp"
+        />
+
+    <TextView
+        android:id="@+id/tv_TXZBXX_stm32"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:textColor="@android:color/black"
+        android:textSize="18sp" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <com.dd.CircularProgressButton
+        android:id="@+id/btn_TXZBXX_tiJiao"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:textColor="@color/mFontWhite"
+        android:textSize="24sp"
+        app:cpb_colorIndicator="@color/mBlue"
+        app:cpb_cornerRadius="48dp"
+        app:cpb_textComplete="修改成功"
+        app:cpb_textError="提交失败"
+        app:cpb_textIdle="提交修改"
+        />
+</LinearLayout>
