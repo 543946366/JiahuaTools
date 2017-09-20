@@ -2,7 +2,6 @@ package com.jiahua.jiahuatools.ui;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
@@ -29,8 +28,8 @@ public class NewOffLineListActivity extends AppCompatActivity implements Consts{
     TextView tvNewOffLineListDevInfo;
     @BindView(R.id.tv_new_offLineList_dev_newVersionInfo)
     TextView tvNewOffLineListDevNewVersionInfo;
-    @BindView(R.id.rv_newOffLineList)
-    RecyclerView rvNewOffLineList;
+    /*@BindView(R.id.rv_newOffLineList)
+    RecyclerView rvNewOffLineList;*/
 
     private String display_model_number_add_serial_number;
     private String displayIP;

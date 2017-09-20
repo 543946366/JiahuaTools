@@ -35,7 +35,7 @@ public class SplashActivity extends AppCompatActivity {
         new Handler().postDelayed(() ->{
                 startActivity(new Intent(SplashActivity.this,MainActivity.class));
                 finish();
-        },1500);
+        },500);
     }
 
     @NeedsPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)

@@ -47,7 +47,7 @@ dependencies {
     compile 'com.zhy:okhttputils:2.6.2'
     compile 'com.google.code.gson:gson:2.8.0'
     compile 'com.github.hotchemi:permissionsdispatcher:2.4.0'
-    compile 'org.litepal.android:core:1.5.1'
+    compile 'org.litepal.android:core:1.6.0'
     compile 'com.afollestad.material-dialogs:core:0.9.4.5'
     compile 'com.afollestad.material-dialogs:commons:0.9.4.5'
     compile 'com.orhanobut:logger:2.1.1'

@@ -141,6 +141,7 @@ public class NewGuanLiActivity extends AppCompatActivity implements Consts {
         }
     }
 
+    //获取设备服务
     private void getCapability() {
         //创建一个Request  "http://192.168.63.9:8199/get_capability"  正则表达式获取IP，再加端口号处理
         //String reg = ".*\\/\\/([^\\/\\:]*).*";
