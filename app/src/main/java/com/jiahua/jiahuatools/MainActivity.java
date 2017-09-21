@@ -158,7 +158,8 @@ public class MainActivity extends AppCompatActivity
 
         //设置标题栏
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("");
+        //toolbar.setTitle("");
+        toolbar.setTitleTextColor(getResources().getColor(R.color.md_yellow_500));
         setSupportActionBar(toolbar);
 
         //设置标题栏左上角菜单图标的动画效果
@@ -168,6 +169,7 @@ public class MainActivity extends AppCompatActivity
         //drawer.setDrawerListener(toggle);
         //同步动画
         toggle.syncState();
+        toolbar.setNavigationIcon(R.drawable.ic_menu_black_24dp);
 
         //设置侧边栏的选项点击
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);

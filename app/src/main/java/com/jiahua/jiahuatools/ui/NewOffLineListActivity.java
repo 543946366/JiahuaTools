@@ -39,12 +39,14 @@ public class NewOffLineListActivity extends AppCompatActivity implements Consts{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_off_line_list);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("");
+        //toolbar.setTitle("");
+        toolbar.setTitleTextColor(getResources().getColor(R.color.md_yellow_500));
         setSupportActionBar(toolbar);
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
 
         ButterKnife.bind(this);
 

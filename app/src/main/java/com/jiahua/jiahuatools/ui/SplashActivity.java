@@ -8,7 +8,6 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.WindowManager;
 
-import com.jiahua.jiahuatools.MainActivity;
 import com.jiahua.jiahuatools.R;
 
 import permissions.dispatcher.NeedsPermission;
@@ -33,7 +32,7 @@ public class SplashActivity extends AppCompatActivity {
 
     private void jump() {
         new Handler().postDelayed(() ->{
-                startActivity(new Intent(SplashActivity.this,MainActivity.class));
+                startActivity(new Intent(SplashActivity.this,AccountLoginActivity.class));
                 finish();
         },500);
     }

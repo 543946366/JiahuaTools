@@ -21,6 +21,7 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
@@ -28,7 +29,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.jiahua.jiahuatools.R;
@@ -176,9 +176,9 @@ public class UPnPDeviceAdapter extends RecyclerView.Adapter<UPnPDeviceAdapter.Vi
             } else {
                 if (item.getModelNumber().equals(Consts.MT_guoKe_model_number)) {
                     //设置 item图片
-                    holder.icon.setImageResource(R.mipmap.camera_icon);
+                    holder.icon.setImageResource(R.drawable.camera_icon);
                 } else {
-                    holder.icon.setImageResource(R.mipmap.cheji_icon);
+                    holder.icon.setImageResource(R.drawable.ic_cheji_icon);
                 }
             }
 
@@ -240,7 +240,7 @@ public class UPnPDeviceAdapter extends RecyclerView.Adapter<UPnPDeviceAdapter.Vi
         TextView friendlyName;
 
         @Nullable
-        LinearLayout ll_upnp_dev_item;
+        CardView ll_upnp_dev_item;
 
         @Nullable
         TextView tv_item_upnp_device_guanLi;
@@ -253,7 +253,7 @@ public class UPnPDeviceAdapter extends RecyclerView.Adapter<UPnPDeviceAdapter.Vi
             ButterKnife.bind(this, view);
             icon = (ImageView) view.findViewById(R.id.icon);
             friendlyName = (TextView) view.findViewById(R.id.friendly_name);
-            ll_upnp_dev_item = (LinearLayout) view.findViewById(R.id.ll_upnp_dev_item);
+            ll_upnp_dev_item = (CardView) view.findViewById(R.id.cv_upnp_dev_item);
             tv_item_upnp_device_guanLi = (TextView) view.findViewById(R.id.tv_item_upnp_device_guanLi);
         }
 

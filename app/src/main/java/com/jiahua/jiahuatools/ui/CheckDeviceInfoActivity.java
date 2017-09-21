@@ -119,11 +119,12 @@ public class CheckDeviceInfoActivity extends AppCompatActivity implements Consts
         ButterKnife.bind(this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("");
+        toolbar.setTitleTextColor(getResources().getColor(R.color.md_yellow_500));
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
 
         init();
     }

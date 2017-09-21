@@ -26,6 +26,9 @@
                 android:id="@+id/cv_new_guanLi_devInfo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
                 android:layout_marginBottom="30dp"
                 app:cardCornerRadius="4dp"
                 android:visibility="visible"
@@ -44,7 +47,9 @@
                         android:layout_gravity="center_horizontal"
                         android:layout_marginBottom="16dp"
                         android:text="设备版本"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"
+                        android:textColor="@color/mFontBlack"
+                        />
 
                     <TextView
                         android:id="@+id/tv_new_guanLi_dev_info"
@@ -68,7 +73,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:foreground="?attr/selectableItemBackground"
-                        app:cardBackgroundColor="@color/mBlue"
+                        app:cardBackgroundColor="@color/colorAccent"
                         app:cardCornerRadius="6dp"
                         android:layout_marginBottom="16dp"
                         >
@@ -78,7 +83,7 @@
                             android:layout_height="@dimen/bule_button_height"
                             android:gravity="center"
                             android:text="软件升级"
-                            android:textColor="@color/mFontWhite" />
+                            android:textColor="@color/mFontBlack" />
                     </android.support.v7.widget.CardView>
 
                     <android.support.v7.widget.CardView
@@ -87,7 +92,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:foreground="?attr/selectableItemBackground"
-                        app:cardBackgroundColor="@color/mBlue"
+                        app:cardBackgroundColor="@color/colorAccent"
                         app:cardCornerRadius="6dp"
                         android:layout_marginBottom="16dp"
                         >
@@ -97,7 +102,7 @@
                             android:layout_height="@dimen/bule_button_height"
                             android:gravity="center"
                             android:text="主板信息"
-                            android:textColor="@color/mFontWhite" />
+                            android:textColor="@color/mFontBlack" />
                     </android.support.v7.widget.CardView>
 
                 </LinearLayout>
@@ -107,7 +112,7 @@
                 android:id="@+id/cv_new_guanLi_wifiPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="30dp"
+                android:layout_margin="5dp"
                 app:cardCornerRadius="4dp"
                 android:visibility="visible"
                 >
@@ -124,7 +129,9 @@
                         android:layout_gravity="center_horizontal"
                         android:layout_marginBottom="16dp"
                         android:text="该设备的WiFi密码"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"
+                        android:textColor="@color/mFontBlack"
+                        />
 
                     <TextView
                         android:id="@+id/tv_new_guanLi_show_password"
@@ -141,7 +148,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:foreground="?attr/selectableItemBackground"
-                        app:cardBackgroundColor="@color/mBlue"
+                        app:cardBackgroundColor="@color/colorAccent"
                         app:cardCornerRadius="6dp"
                         android:layout_marginBottom="16dp"
                         >
@@ -151,7 +158,7 @@
                             android:layout_height="@dimen/bule_button_height"
                             android:gravity="center"
                             android:text="修改密码"
-                            android:textColor="@color/mFontWhite" />
+                            android:textColor="@color/mFontBlack" />
                     </android.support.v7.widget.CardView>
                 </LinearLayout>
 
