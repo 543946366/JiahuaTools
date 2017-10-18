@@ -112,6 +112,7 @@ public interface Consts {
      *  --------------------------------------------------------------------------
      */
     String DEVICE_MODEL_NUMBER_ADD_SERIAL_NUMBER = "device_model_number_add_serial_number";
+    String DEVICE_SN = "sn";
     /**
      *  正则表达式
      *  --------------------------------------------------------------------------

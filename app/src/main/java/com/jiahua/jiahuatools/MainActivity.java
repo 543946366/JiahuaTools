@@ -7,7 +7,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -27,6 +30,7 @@ import com.jiahua.jiahuatools.adapter.UPnPDeviceOffLineAdapter;
 import com.jiahua.jiahuatools.bean.DeviceOffLine;
 import com.jiahua.jiahuatools.consts.Consts;
 import com.jiahua.jiahuatools.ui.NewOffLineListActivity;
+import com.jiahua.jiahuatools.ui.OTRSMainActivity;
 import com.jiahua.jiahuatools.upnp.UPnPDeviceAdapter;
 import com.jiahua.jiahuatools.upnp.UPnPDeviceFinder;
 import com.jiahua.jiahuatools.utils.PasswordHelp;
@@ -60,6 +64,7 @@ public class MainActivity extends AppCompatActivity
     //离线用的RecyclerVIew
     @BindView(R.id.rv_main_offLine)
     RecyclerView offLineRecyclerView;
+    FloatingActionButton fab;
     /*//国科设备离线item
     @BindView(R.id.ll_cameraLiXian_main)
     CardView ll_cameraLiXian_main;
@@ -159,7 +164,8 @@ public class MainActivity extends AppCompatActivity
         //设置标题栏
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //toolbar.setTitle("");
-        toolbar.setTitleTextColor(getResources().getColor(R.color.md_yellow_500));
+        //toolbar.setTitleTextColor(getResources().getColor(R.color.md_yellow_500));
+        toolbar.setTitleTextColor(ContextCompat.getColor(this,R.color.md_yellow_500));
         setSupportActionBar(toolbar);
 
         //设置标题栏左上角菜单图标的动画效果
@@ -169,7 +175,11 @@ public class MainActivity extends AppCompatActivity
         //drawer.setDrawerListener(toggle);
         //同步动画
         toggle.syncState();
-        toolbar.setNavigationIcon(R.drawable.ic_menu_black_24dp);
+        toolbar.setNavigationIcon(R.drawable.ic_menu_yellow_24dp);
+
+        //新设置的工单按钮
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(view -> startActivity(new Intent(MainActivity.this, OTRSMainActivity.class)));
 
         //设置侧边栏的选项点击
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -348,13 +358,13 @@ public class MainActivity extends AppCompatActivity
         //noinspection SimplifiableIfStatement
         //设置右上的点击响应功能
         if (id == R.id.action_search) {
-            //startActivity(new Intent(MainActivity.this, DengLuActivity.class));
             mAdapter.clear();
             uPnPDeviceOffLineAdapter.clear();
             liXianDev();
-
             //uPnPDeviceOffLineAdapter.removeData(deviceOffLineList.indexOf(deviceOffLine));
             searchUpnpDev();
+            Snackbar.make(fab, "刷新在线设备列表完成", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
             return true;
         }
 

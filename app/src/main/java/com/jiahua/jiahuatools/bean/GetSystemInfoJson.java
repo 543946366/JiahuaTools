@@ -3,6 +3,8 @@ package com.jiahua.jiahuatools.bean;
  * Created by ZhiPeng Huang on 2017-06-06.
  */
 
+import java.util.List;
+
 public class GetSystemInfoJson {
 
     /**
@@ -15,7 +17,6 @@ public class GetSystemInfoJson {
      * can_controler : xxx
      *
      */
-
     private String sn;
     private String hwid;
     private String swid;
@@ -23,6 +24,17 @@ public class GetSystemInfoJson {
     private String stm32_ver;
     private String model_name;
     private String can_controler;
+    //工单任务列表使用的设备类型
+    private String model_number;
+    private List<GetSystemInfoJson> ticketTask;
+
+    public String getModel_number() {
+        return model_number;
+    }
+
+    public void setModel_number(String model_number) {
+        this.model_number = model_number;
+    }
 
     public String getSn() {
         return sn;
@@ -78,5 +90,13 @@ public class GetSystemInfoJson {
 
     public void setCan_controler(String can_controler) {
         this.can_controler = can_controler;
+    }
+
+    public List<GetSystemInfoJson> getTicketTask() {
+        return ticketTask;
+    }
+
+    public void setTicketTask(List<GetSystemInfoJson> ticketTask) {
+        this.ticketTask = ticketTask;
     }
 }

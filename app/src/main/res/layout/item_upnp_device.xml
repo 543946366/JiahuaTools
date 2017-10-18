@@ -75,7 +75,7 @@
                     android:id="@+id/iv_item_upnp_device_down"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_keyboard_arrow_down_black_24dp" />
+                    android:src="@drawable/ic_keyboard_arrow_down_yellow_24dp" />
 
             </LinearLayout>
 

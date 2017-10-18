@@ -127,7 +127,28 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.jiahua.jiahuatools.MainActivity" />
         </activity>
-        <activity android:name=".ui.AccountLoginActivity"></activity>
+        <activity
+            android:name=".ui.AccountLoginActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.TicketWebActivity"
+            android:label="工单详情"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.OTRSMainActivity"
+            android:label="@string/title_activity_otrsmain"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.OTRSLockActivity"
+            android:label="@string/title_activity_otrslock"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.OTRSTicketTaskActivity"
+            android:label="@string/title_activity_otrsticket_task"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

@@ -169,7 +169,7 @@ public class CheckDevVersionActivity extends AppCompatActivity implements Consts
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
-        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_yellow_24dp);
 
         init();
         initView();

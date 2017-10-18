@@ -204,7 +204,7 @@
         android:textSize="24sp"
         app:cpb_selectorIdle="@drawable/idle_state_selector"
         app:cpb_colorIndicator="@color/colorAccent"
-        app:cpb_cornerRadius="48dp"
+        app:cpb_cornerRadius="6dp"
         app:cpb_textComplete="修改成功"
         app:cpb_textError="提交失败"
         app:cpb_textIdle="提交修改"

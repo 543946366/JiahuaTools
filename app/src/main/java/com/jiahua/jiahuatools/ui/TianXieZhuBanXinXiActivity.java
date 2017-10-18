@@ -164,7 +164,7 @@ public class TianXieZhuBanXinXiActivity extends AppCompatActivity implements Con
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
-        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_yellow_24dp);
 
         init();
 

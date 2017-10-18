@@ -55,7 +55,7 @@
     <string name="confirm">确  认</string>
     <string name="username">用户名</string>
     <string name="setting">设置</string>
-    <string name="cancel_automatic_login">取消自动登录</string>
+    <string name="cancel_automatic_login">取消设备自动登录</string>
     <string name="title_activity_car_dev_upgrade">车机固件升级</string>
     <string name="dan_pian_ji_upgrade">单片机升级</string>
     <string name="system_upgrade">系统文件升级</string>
@@ -81,5 +81,8 @@
     <string name="title_activity_new_txzbxx">NewTXZBXXActivity</string>
     <string name="title_activity_main2">Main2Activity</string>
     <string name="title_activity_account_login">AccountLoginActivity</string>
+    <string name="title_activity_otrsmain">OTRS工单系统</string>
+    <string name="title_activity_otrslock">锁定的工单</string>
+    <string name="title_activity_otrsticket_task">工单任务</string>
 
 </resources>

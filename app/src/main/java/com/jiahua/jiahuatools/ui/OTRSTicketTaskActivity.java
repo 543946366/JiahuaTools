@@ -1,0 +1,153 @@
+package com.jiahua.jiahuatools.ui;
+
+import android.graphics.Color;
+import android.os.Bundle;
+import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
+
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.dd.CircularProgressButton;
+import com.jiahua.jiahuatools.R;
+import com.jiahua.jiahuatools.adapter.TicketTaskAdapter;
+import com.jiahua.jiahuatools.bean.TicketTask;
+import com.jiahua.jiahuatools.bean.UserAndPassword;
+import com.jiahua.jiahuatools.consts.Consts;
+import com.orhanobut.logger.Logger;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
+
+import org.litepal.crud.DataSupport;
+
+import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import okhttp3.Call;
+
+public class OTRSTicketTaskActivity extends AppCompatActivity {
+
+    @BindView(R.id.rv_test)
+    RecyclerView rvTest;
+    @BindView(R.id.cpb_otrsTicketTask_ok)
+    CircularProgressButton cpbOtrsTicketTaskOk;
+
+    private List<TicketTask> ticketTaskList = DataSupport.findAll(TicketTask.class);
+    private TicketTaskAdapter ticketTaskAdapter = new TicketTaskAdapter(ticketTaskList);
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_otrsticket_task);
+        ButterKnife.bind(this);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.md_yellow_500));
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_yellow_24dp);
+
+        init();
+        cpbOtrsTicketTaskOk.setIndeterminateProgressMode(true);
+
+
+    }
+
+    private void init() {
+        String TicketNumber = getIntent().getStringExtra("TicketNumber");
+
+        //ticketTaskAdapter = new TicketTaskAdapter(ticketTaskList);
+
+        ticketTaskAdapter.setOnItemClickListener((adapter, view, position) -> {
+            ticketTaskList.get(position).getSn();
+            TicketTask ticketTask = new TicketTask();
+            ticketTask.setAccomplish(true);
+            ticketTask.saveOrUpdate(Consts.DEVICE_SN + "=?", ticketTaskList.get(position).getSn());
+            ticketTaskList.get(position).setAccomplish(true);
+            ticketTaskAdapter.notifyDataSetChanged();
+        });
+        rvTest.setLayoutManager(new LinearLayoutManager(OTRSTicketTaskActivity.this));
+        rvTest.setAdapter(ticketTaskAdapter);
+    }
+
+    @Override
+    protected void onResume() {
+        cpbOtrsTicketTaskOk.setProgress(0);
+        cpbOtrsTicketTaskOk.setClickable(true);
+
+        super.onResume();
+    }
+
+    @OnClick(R.id.cpb_otrsTicketTask_ok)
+    public void onClick(View view){
+        cpbOtrsTicketTaskOk.setProgress(50);
+        cpbOtrsTicketTaskOk.setClickable(false);
+        for(TicketTask ticketTask : ticketTaskList){
+            if(!ticketTask.isAccomplish()){
+
+                new MaterialDialog.Builder(this)
+                        .title("警告")
+                        .content("还有工单任务未完成！\n请继续完成再提交！")
+                        .positiveText("确定")
+                        .positiveColor(Color.RED)
+                        .cancelable(false)
+                        .onPositive((dialog, which) -> dialog.dismiss())
+                        .show();
+                cpbOtrsTicketTaskOk.setProgress(0);
+                cpbOtrsTicketTaskOk.setClickable(true);
+                return;
+            }
+        }
+        cpbOtrsTicketTaskOk.setClickable(true);
+
+        if(DataSupport.isExist(TicketTask.class)) {
+            UserAndPassword userAndPassword = DataSupport.findFirst(UserAndPassword.class);
+            String user = userAndPassword.getUser();
+            String password = userAndPassword.getPassword();
+            String TicketId = ticketTaskList.get(0).getTicket_id();
+            String idUrl = "https://imotom01.dd.ezbox.cc:34443/otrs/nph-genericinterface.pl/Webservice/testWeb/Ticket/"
+                    + TicketId + "/dd?UserLogin=" + user + "&Password=" + password;
+            OkHttpUtils
+                    .postString()
+                    .content("{\"Ticket\":{\"Owner\":\"zhipeng.huang@jiahua.win\"}}")
+                    .url(idUrl).build().execute(new StringCallback() {
+                @Override
+                public void onError(Call call, Exception e, int id) {
+                    Logger.d(e.getMessage());
+                }
+
+                @Override
+                public void onResponse(String response, int id) {
+                    Logger.d(response);
+
+                }
+            });
+            DataSupport.deleteAll(TicketTask.class);
+
+            ticketTaskList.clear();
+            ticketTaskAdapter.notifyDataSetChanged();
+       /* new MaterialDialog.Builder(this)
+                .title("提交成功")
+                .content("全部工单任务提交完成！\n请下载其他工单任务！")
+                .positiveText("确定")
+                .positiveColor(Color.RED)
+                .cancelable(false)
+                .onPositive((dialog, which) -> dialog.dismiss()).show();*/
+            Logger.e("完成");
+
+            Snackbar.make(view, "全部工单任务提交完成！\n请下载其他工单任务！", Snackbar.LENGTH_LONG)
+                    .show();
+            cpbOtrsTicketTaskOk.setProgress(100);
+        }else {
+            Snackbar.make(view, "当前无任务可提交！\n请下载其他工单任务！", Snackbar.LENGTH_LONG)
+                    .show();
+            cpbOtrsTicketTaskOk.setProgress(0);
+        }
+    }
+}
