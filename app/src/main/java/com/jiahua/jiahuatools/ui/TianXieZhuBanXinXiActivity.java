@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -20,12 +21,15 @@ import com.dd.CircularProgressButton;
 import com.google.gson.GsonBuilder;
 import com.jiahua.jiahuatools.R;
 import com.jiahua.jiahuatools.bean.GetSystemInfoJson;
+import com.jiahua.jiahuatools.bean.TicketTask;
 import com.jiahua.jiahuatools.consts.Consts;
 import com.jiahua.jiahuatools.utils.DigestAuthenticationUtil;
 import com.orhanobut.logger.Logger;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 import com.zhy.http.okhttp.utils.L;
+
+import org.litepal.crud.DataSupport;
 
 import java.lang.ref.WeakReference;
 
@@ -315,6 +319,10 @@ public class TianXieZhuBanXinXiActivity extends AppCompatActivity implements Con
                                     L.e("TXZ_ok-------------" + response);
                                     if (response.contains("200")) {
                                         btnTXZBXXTiJiao.setProgress(100);
+                                        //TODO
+                                        TicketTask ticketTask = new TicketTask();
+                                        ticketTask.setAccomplish(true);
+                                        ticketTask.saveOrUpdate(Consts.DEVICE_SN + "=?", et_TXZBXX_sn.getText().toString());
                                         //Toast.makeText(TianXieZhuBanXinXiActivity.this, "修改成功。", Toast.LENGTH_SHORT).show();
                                         new Handler().postDelayed(() ->{
                                             btnTXZBXXTiJiao.setProgress(0);
@@ -339,8 +347,40 @@ public class TianXieZhuBanXinXiActivity extends AppCompatActivity implements Con
             case android.R.id.home:
                 finish();
                 return true;
+
+            case R.id.action_daoRu:
+                //执行导入数据
+                saveData();
+                return true;
         }
         return super.onOptionsItemSelected(item);
 
     }
+
+    private void saveData() {
+        if(DataSupport.isExist(TicketTask.class,"Flag=?","1")){
+            TicketTask ticketTask = DataSupport.where("Flag=?","1").findFirst(TicketTask.class);
+            Logger.e(ticketTask.getSn());
+            ticketTask.setFlag(false);
+            ticketTask.saveOrUpdate(Consts.DEVICE_SN + "=?", ticketTask.getSn());
+            et_TXZBXX_sn.setText(ticketTask.getSn());
+            et_TXZBXX_hwid.setText(ticketTask.getHwid());
+            et_TXZBXX_mac.setText(ticketTask.getMac());
+            et_TXZBXX_model_name.setVisibility(View.GONE);
+            et_TXZBXX_can_controler.setVisibility(View.GONE);
+            Toast.makeText(this, "导入数据成功，确认无误后请点击提交！", Toast.LENGTH_SHORT).show();
+
+        }else{
+            Toast.makeText(this, "当前无数据可导入，请手动填写！", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.activity_tian_xie_zhu_ban_xin_xi, menu);
+        return true;
+    }
+
 }

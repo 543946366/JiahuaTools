@@ -148,4 +148,12 @@ public interface Consts {
      * ---------------------------------------------------------------------------------------
      */
     String NAVIGATION_APP_NAME= "navigation.apk";
+
+    /**
+     * getIntent().getFlags()
+     * ---------------------------------------------------------------------------------------
+     */
+    //OTRSTicketTaskActivity -> MainActivity
+    int OTRSTTA_to_MA = 104;
+
 }

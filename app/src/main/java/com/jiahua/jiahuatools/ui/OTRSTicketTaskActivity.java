@@ -1,5 +1,6 @@
 package com.jiahua.jiahuatools.ui;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -12,6 +13,7 @@ import android.view.View;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.dd.CircularProgressButton;
+import com.jiahua.jiahuatools.MainActivity;
 import com.jiahua.jiahuatools.R;
 import com.jiahua.jiahuatools.adapter.TicketTaskAdapter;
 import com.jiahua.jiahuatools.bean.TicketTask;
@@ -30,12 +32,16 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import okhttp3.Call;
 
+import static com.jiahua.jiahuatools.consts.Consts.INTENT_display_model_number;
+
 public class OTRSTicketTaskActivity extends AppCompatActivity {
 
     @BindView(R.id.rv_test)
     RecyclerView rvTest;
     @BindView(R.id.cpb_otrsTicketTask_ok)
     CircularProgressButton cpbOtrsTicketTaskOk;
+    private String myTicketTaskSn;
+    private int myTicketTaskPosition;
 
     private List<TicketTask> ticketTaskList = DataSupport.findAll(TicketTask.class);
     private TicketTaskAdapter ticketTaskAdapter = new TicketTaskAdapter(ticketTaskList);
@@ -56,7 +62,6 @@ public class OTRSTicketTaskActivity extends AppCompatActivity {
         init();
         cpbOtrsTicketTaskOk.setIndeterminateProgressMode(true);
 
-
     }
 
     private void init() {
@@ -65,12 +70,17 @@ public class OTRSTicketTaskActivity extends AppCompatActivity {
         //ticketTaskAdapter = new TicketTaskAdapter(ticketTaskList);
 
         ticketTaskAdapter.setOnItemClickListener((adapter, view, position) -> {
-            ticketTaskList.get(position).getSn();
+            //TODO 给当前工单任务做标记
             TicketTask ticketTask = new TicketTask();
-            ticketTask.setAccomplish(true);
+            ticketTask.setFlag(true);
             ticketTask.saveOrUpdate(Consts.DEVICE_SN + "=?", ticketTaskList.get(position).getSn());
-            ticketTaskList.get(position).setAccomplish(true);
-            ticketTaskAdapter.notifyDataSetChanged();
+            //ticketTaskList.get(position).setAccomplish(true);
+            //ticketTaskAdapter.notifyDataSetChanged();
+            myTicketTaskSn = ticketTaskList.get(position).getSn();
+            myTicketTaskPosition = position;
+
+            startActivity(new Intent(OTRSTicketTaskActivity.this, MainActivity.class).setFlags(Consts.OTRSTTA_to_MA)
+                    .putExtra(INTENT_display_model_number,ticketTaskList.get(position).getModel_number()));
         });
         rvTest.setLayoutManager(new LinearLayoutManager(OTRSTicketTaskActivity.this));
         rvTest.setAdapter(ticketTaskAdapter);
@@ -82,6 +92,17 @@ public class OTRSTicketTaskActivity extends AppCompatActivity {
         cpbOtrsTicketTaskOk.setClickable(true);
 
         super.onResume();
+    }
+
+    @Override
+    protected void onRestart() {
+        TicketTask ticketTask = DataSupport.where("sn=?",myTicketTaskSn).findFirst(TicketTask.class);
+        if(ticketTask.isAccomplish()) {
+            ticketTaskList.get(myTicketTaskPosition).setAccomplish(true);
+            Logger.e(ticketTaskList.get(myTicketTaskPosition).isAccomplish() + "");
+            ticketTaskAdapter.notifyDataSetChanged();
+        }
+        super.onRestart();
     }
 
     @OnClick(R.id.cpb_otrsTicketTask_ok)

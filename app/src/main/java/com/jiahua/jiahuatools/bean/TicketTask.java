@@ -14,6 +14,16 @@ public class TicketTask extends DataSupport {
     private String mac;
     //是否已经完成
     private boolean accomplish;
+    //对当前任务做标记
+    private boolean Flag;
+
+    public boolean isFlag() {
+        return Flag;
+    }
+
+    public void setFlag(boolean flag) {
+        Flag = flag;
+    }
 
     public String getTicket_id() {
         return ticket_id;

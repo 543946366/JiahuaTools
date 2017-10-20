@@ -148,7 +148,7 @@
         <activity
             android:name=".ui.OTRSTicketTaskActivity"
             android:label="@string/title_activity_otrsticket_task"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

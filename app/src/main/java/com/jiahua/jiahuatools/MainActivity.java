@@ -65,20 +65,6 @@ public class MainActivity extends AppCompatActivity
     @BindView(R.id.rv_main_offLine)
     RecyclerView offLineRecyclerView;
     FloatingActionButton fab;
-    /*//国科设备离线item
-    @BindView(R.id.ll_cameraLiXian_main)
-    CardView ll_cameraLiXian_main;
-    //车机设备离线item
-    @BindView(R.id.ll_carLiXian_main)
-    CardView ll_carLiXian_main;*/
-    /*//国科设备item设备名
-    @BindView(R.id.tv_cameraItem_title)
-    TextView tv_cameraItem_name;
-    //车机设备item设备名
-    @BindView(R.id.tv_carItem_title)
-    TextView tv_carItem_name;*/
-    //本地保存的设备名序列号
-    //String benDiBaoCunDisplaySerialNumber;
 
     //离线设备数据
     List<DeviceOffLine> deviceOffLineList = new ArrayList<>();
@@ -124,13 +110,15 @@ public class MainActivity extends AppCompatActivity
                                             .execute(new StringCallback() {
                                                 @Override
                                                 public void onError(Call call, Exception e, int id) {
-                                                    Toast.makeText(activity, "重启失败！\n" + "失败信息：" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                                    Toast.makeText(activity, "重启失败！\n" + "失败信息："
+                                                            + e.getMessage(), Toast.LENGTH_SHORT).show();
 
                                                 }
 
                                                 @Override
                                                 public void onResponse(String response, int id) {
-                                                    Toast.makeText(activity, "重启设备成功！\n" + response, Toast.LENGTH_SHORT).show();
+                                                    Toast.makeText(activity, "重启设备成功！\n"
+                                                            + response, Toast.LENGTH_SHORT).show();
 
                                                 }
 
@@ -195,6 +183,9 @@ public class MainActivity extends AppCompatActivity
         vRecycler.setVisibility(View.INVISIBLE);
         vRecycler.setAdapter(mAdapter);
 
+        if(getIntent().getFlags() == OTRSTTA_to_MA){
+            fab.setVisibility(View.GONE);
+        }
         liXianDev();
     }
 
@@ -218,19 +209,9 @@ public class MainActivity extends AppCompatActivity
         uPnPDeviceOffLineAdapter.setOnItemClickLitener(new UPnPDeviceOffLineAdapter.OnItemClickLitener() {
             @Override
             public void onItemClick(View view, int position) {
-               /* if(deviceOffLineList.get(position).getDevice_model_number().equals(MT_guoKe_model_number)) {
-                    startActivity(new Intent(MainActivity.this, OffLineListActivity.class)
-                            .setFlags(1828)
-                            .putExtra(INTENT_display_model_number_add_serial_number, deviceOffLineList.get(position).getDevice_model_number_add_serial_number()));
-                }else if(deviceOffLineList.get(position).getDevice_model_number().equals(MT_cheJi_model_number)){
-                    startActivity(new Intent(MainActivity.this, OffLineListActivity.class)
-                            .setFlags(1845)
-                            .putExtra(INTENT_display_model_number_add_serial_number, deviceOffLineList.get(position).getDevice_model_number_add_serial_number()));
-
-                }
-*/
                 startActivity(new Intent(MainActivity.this, NewOffLineListActivity.class)
-                        .putExtra(INTENT_display_model_number_add_serial_number, deviceOffLineList.get(position).getDevice_model_number_add_serial_number()));
+                        .putExtra(INTENT_display_model_number_add_serial_number,
+                                deviceOffLineList.get(position).getDevice_model_number_add_serial_number()));
             }
 
             @Override
@@ -295,9 +276,11 @@ public class MainActivity extends AppCompatActivity
                     }
 
                     try {
-                        //搜索到的Upnp设备含有车机或者国科设备序列号才显示在线
-                        //if (device.getSerialNumber().contains(MT_cheJi_serial_number) || device.getSerialNumber().contains(MT_guoKe_serial_number)) {
-                        if (device.getManufacturer().equals(Manufacturer_Imotom) || device.getManufacturer().equals(Manufacturer_Jiahua)) {
+                        //搜索到的Upnp设备含有目拓或者是加华的制造商才显示在线
+                        if (!((device.getManufacturer().equals(Manufacturer_Imotom)
+                                || device.getManufacturer().equals(Manufacturer_Jiahua))
+                                && getIntent().getFlags() == OTRSTTA_to_MA)
+                                || device.getModelNumber().equals(getIntent().getStringExtra(INTENT_display_model_number))) {
                             mAdapter.add(device);
                             //offLineAdapter.remove(deviceOffLine);
                             //如果upnp设备在线，则移除离线设备的显示
@@ -305,7 +288,8 @@ public class MainActivity extends AppCompatActivity
                                 offLineRecyclerView.setVisibility(View.VISIBLE);
                                 for (DeviceOffLine deviceOffLine : deviceOffLineList) {
                                     int t = -1;
-                                    if (deviceOffLine.getDevice_model_number_add_serial_number().equals(device.getModelNumber() + device.getSerialNumber())) {
+                                    if (deviceOffLine.getDevice_model_number_add_serial_number().equals(device.getModelNumber()
+                                            + device.getSerialNumber())) {
                                         Logger.e(deviceOffLine.getDevice_model_number_add_serial_number());
                                         t = deviceOffLineList.indexOf(deviceOffLine);
 

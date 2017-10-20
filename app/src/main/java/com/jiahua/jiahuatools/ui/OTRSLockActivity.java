@@ -133,7 +133,7 @@ public class OTRSLockActivity extends AppCompatActivity implements Consts {
         DataSupport.deleteAll(TicketTask.class);
 
         String jsontest = "{\"ticketTask\":[\n" +
-                "{\"model_number\":\"MT1767\",\"swid\":\"1.0.0.1\",\"hwid\":\"MT1767V12\",\"sn\":\"MT1767000001\",\"mac\":\"00:20:18:00:00:01\"},\n" +
+                "{\"model_number\":\"MT1767\",\"swid\":\"1.0.0.1\",\"hwid\":\"MT1767\",\"sn\":\"MT1767000001\",\"mac\":\"3c:33:00:00:00:01\"},\n" +
                 "{\"model_number\":\"MT1767\",\"swid\":\"1.0.0.1\",\"hwid\":\"MT1767V12\",\"sn\":\"MT1767000002\",\"mac\":\"00:20:18:00:00:01\"},\n" +
                 "{\"model_number\":\"MT1767\",\"swid\":\"1.0.0.1\",\"hwid\":\"MT1767V12\",\"sn\":\"MT1767000003\",\"mac\":\"00:20:18:00:00:01\"},\n" +
                 "{\"model_number\":\"MT1767\",\"swid\":\"1.0.0.1\",\"hwid\":\"MT1767V12\",\"sn\":\"MT1767000004\",\"mac\":\"00:20:18:00:00:01\"},\n" +
