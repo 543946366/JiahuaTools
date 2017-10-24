@@ -497,7 +497,6 @@ public class CarDevUpgradeActivity extends AppCompatActivity implements Consts {
                 .positiveText("下载")
                 .onPositive(
                         (dialog,which) ->{
-                            //TODo
                             mProgressBar.setVisibility(View.VISIBLE);
                             sendBroadcast(new Intent().setAction(ACTION_DOWNLOAD_OR_PAUSE).putExtra(EXTRA_DOWNLOAD_GUJIAN_NAME_TEXT, "MT1845/"+upgradeText+"/"+guJianName));
 

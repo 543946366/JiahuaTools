@@ -92,7 +92,6 @@ public class DownloadFileService extends Service implements Consts {
                     call.cancel();
                     isDownload = false;
                 }else {
-                    //TODO
                     //旧的 guJianName = intent.getStringExtra(EXTRA_DOWNLOAD_GUJIAN_NAME_TEXT);
                     String s = intent.getStringExtra(EXTRA_DOWNLOAD_GUJIAN_NAME_TEXT);
                     L.e("升级路径"+s.split("/").length);

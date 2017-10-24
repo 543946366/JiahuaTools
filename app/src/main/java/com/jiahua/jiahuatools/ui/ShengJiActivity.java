@@ -104,7 +104,6 @@ public class ShengJiActivity extends AppCompatActivity implements View.OnClickLi
                 /*
                  * 向Service发送点击了下载按钮的广播
                  */
-                //TODO
                 //sendBroadcast(new Intent().setAction(ACTION_DOWNLOAD_OR_PAUSE).putExtra(EXTRA_DOWNLOAD_GUJIAN_NAME_TEXT, guJianName));
                 sendBroadcast(new Intent().setAction(ACTION_DOWNLOAD_OR_PAUSE).putExtra(EXTRA_DOWNLOAD_GUJIAN_NAME_TEXT, "MT1828/"+guJianName));
 
@@ -194,7 +193,6 @@ public class ShengJiActivity extends AppCompatActivity implements View.OnClickLi
                     deviceOffLine.setDevice_guoke_version_number(activity.dangQianBanBenName);
                     deviceOffLine.saveOrUpdate(DEVICE_MODEL_NUMBER_ADD_SERIAL_NUMBER+"=?",deviceOffLine.getDevice_model_number_add_serial_number());
 */
-                    //TODO
                     try {
                         Logger.e(msg.obj.toString());
                         DeviceOffLine deviceOffLine = new DeviceOffLine();
@@ -363,7 +361,7 @@ public class ShengJiActivity extends AppCompatActivity implements View.OnClickLi
         //获取上一个界面传来的URL
         Intent intent = getIntent();
         myBaseUrl = intent.getStringExtra(INTENT_deviceURL);
-        //TODO 获取型号，再区分是国科设备还是车机设备
+        //获取型号，再区分是国科设备还是车机设备
         displayFriendlyName = intent.getStringExtra(INTENT_display_friendly_name);
         displaySerialNumber = intent.getStringExtra(INTENT_display_serial_number);
         displayModelNumber = intent.getStringExtra(INTENT_display_model_number);

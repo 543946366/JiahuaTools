@@ -253,7 +253,6 @@ public class LiXianGuJianDownloadActivity extends AppCompatActivity implements V
                 /*
                  * 向Service发送点击了下载按钮的广播
                  */
-                //TODO
                 sendBroadcast(new Intent().setAction(ACTION_DOWNLOAD_OR_PAUSE).putExtra(EXTRA_DOWNLOAD_GUJIAN_NAME_TEXT, "MT1828/"+newBanBen));
 
                 break;

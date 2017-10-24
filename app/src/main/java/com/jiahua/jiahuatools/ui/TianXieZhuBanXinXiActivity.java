@@ -320,7 +320,6 @@ public class TianXieZhuBanXinXiActivity extends AppCompatActivity implements Con
                                     L.e("TXZ_ok-------------" + response);
                                     if (response.contains("200")) {
                                         btnTXZBXXTiJiao.setProgress(100);
-                                        //TODO
                                         TicketTask ticketTask = new TicketTask();
                                         ticketTask.setAccomplish(true);
                                         ticketTask.saveOrUpdate(Consts.DEVICE_SN + "=?", et_TXZBXX_sn.getText().toString());

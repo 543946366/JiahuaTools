@@ -300,17 +300,10 @@ public class MainActivity extends AppCompatActivity
 
                     try {
                         //搜索到的Upnp设备含有目拓或者是加华的制造商才显示在线
-                        //TODO
                         if (getIntent().getFlags() == OTRSTTA_to_MA ?
                                 device.getModelNumber().equals(getIntent().getStringExtra(INTENT_display_model_number))
                                 : (device.getManufacturer().equals(Manufacturer_Imotom)
                                 || device.getManufacturer().equals(Manufacturer_Jiahua))) {
-                        /*}
-
-                        if (!((device.getManufacturer().equals(Manufacturer_Imotom)
-                                || device.getManufacturer().equals(Manufacturer_Jiahua))
-                                && getIntent().getFlags() == OTRSTTA_to_MA)
-                                || device.getModelNumber().equals(getIntent().getStringExtra(INTENT_display_model_number))) {*/
                             mAdapter.add(device);
                             //offLineAdapter.remove(deviceOffLine);
                             //如果upnp设备在线，则移除离线设备的显示

@@ -66,6 +66,8 @@ public interface Consts {
     String URL_downloadGuoKeAPPurl = "http://shouji.360tpcdn.com/170208/c876925ccfa83020f6a8bb4703b93a02/zxc.com.gkdvr_21.apk";
     //查询设备支持app的基本路径
     String URL_check_dev_supportAPP_baseURL = "http://120.27.94.20:10080/vendor/imotom/";
+    //服务端工单任务附件基本路径
+    String URL_OTRS_TICKET_TASK_BASE_URL = "https://imotom01.dd.ezbox.cc:34443/mfg/otrs/";
 
     /**
      * intent中携带的数据

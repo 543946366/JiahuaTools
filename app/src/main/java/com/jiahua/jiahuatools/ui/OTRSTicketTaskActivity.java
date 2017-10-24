@@ -73,7 +73,12 @@ public class OTRSTicketTaskActivity extends AppCompatActivity {
             if(ticketTaskList.get(position).isAccomplish()){
                 Snackbar.make(view,"该项任务已完成，请完成其他任务！",Snackbar.LENGTH_LONG).show();
             }else {
-                //TODO 给当前工单任务做标记
+                if(DataSupport.isExist(TicketTask.class,"Flag=?","1")){
+                    TicketTask ticketTask = new TicketTask();
+                    ticketTask.setToDefault("Flag");
+                    ticketTask.updateAll();
+                }
+                //给当前工单任务做标记
                 TicketTask ticketTask = new TicketTask();
                 ticketTask.setFlag(true);
                 ticketTask.saveOrUpdate(Consts.DEVICE_SN + "=?", ticketTaskList.get(position).getSn());

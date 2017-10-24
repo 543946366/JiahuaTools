@@ -115,7 +115,8 @@ public class OTRSLockActivity extends AppCompatActivity implements Consts {
                                 {
                                     /*startActivity(new Intent(OTRSLockActivity.this,OTRSTicketTaskActivity.class)
                                             .putExtra("TicketNumber",ticketBeanList.get(position).getTicketNumber()));*/
-                                    saveTicketTask(view,ticketBeanList.get(position).getTicketID());
+                                    saveTicketTask(view,ticketBeanList.get(position).getTicketNumber(),
+                                            ticketBeanList.get(position).getTicketID());
 
                                 });
 
@@ -129,33 +130,45 @@ public class OTRSLockActivity extends AppCompatActivity implements Consts {
         });
     }
 
-    private void saveTicketTask(View view, String ticketID) {
+    private void saveTicketTask(View view, String ticketNumber, String ticketID) {
         DataSupport.deleteAll(TicketTask.class);
 
-        String jsontest = "{\"ticketTask\":[\n" +
+        /*String jsontest = "{\"ticketTask\":[\n" +
                 "{\"model_number\":\"MT1767\",\"swid\":\"1.0.0.1\",\"hwid\":\"MT1767\",\"sn\":\"MT1767000001\",\"mac\":\"3c:33:00:00:00:01\"},\n" +
                 "{\"model_number\":\"MT1767\",\"swid\":\"1.0.0.1\",\"hwid\":\"MT1767V12\",\"sn\":\"MT1767000002\",\"mac\":\"00:20:18:00:00:01\"},\n" +
                 "{\"model_number\":\"MT1767\",\"swid\":\"1.0.0.1\",\"hwid\":\"MT1767V12\",\"sn\":\"MT1767000003\",\"mac\":\"00:20:18:00:00:01\"},\n" +
                 "{\"model_number\":\"MT1767\",\"swid\":\"1.0.0.1\",\"hwid\":\"MT1767V12\",\"sn\":\"MT1767000004\",\"mac\":\"00:20:18:00:00:01\"}\n" +
-                "]}";
-        GetSystemInfoJson getSystemInfoJson = new GsonBuilder().create().fromJson(jsontest, GetSystemInfoJson.class);
-        List<GetSystemInfoJson> getSystemInfoJsonList = getSystemInfoJson.getTicketTask();
-        for (GetSystemInfoJson getSystemInfoJson1 : getSystemInfoJsonList) {
-            TicketTask ticketTask = new TicketTask();
-            ticketTask.setModel_number(getSystemInfoJson1.getModel_number());
-            ticketTask.setSwid(getSystemInfoJson1.getSwid());
-            ticketTask.setHwid(getSystemInfoJson1.getHwid());
-            ticketTask.setSn(getSystemInfoJson1.getSn());
-            ticketTask.setMac(getSystemInfoJson1.getMac());
-            ticketTask.setAccomplish(false);
-            ticketTask.setTicket_id(ticketID);
-            ticketTask.saveOrUpdate(DEVICE_SN + "=?", getSystemInfoJson1.getSn());
-            Logger.e(getSystemInfoJson1.getSn());
-        }
+                "]}";*/
+        String url = URL_OTRS_TICKET_TASK_BASE_URL + ticketNumber + ".txt";
+        OkHttpUtils.get().url(url).build().execute(new StringCallback() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                Snackbar.make(view,"没有成功获取到工单任务，请重试！",Snackbar.LENGTH_LONG).show();
+            }
 
-        Snackbar.make(view, "刷新在线设备列表完成", Snackbar.LENGTH_LONG)
-                .setAction("跳转到当前任务", v -> startActivity(new Intent(OTRSLockActivity.this,OTRSTicketTaskActivity.class)))
-                .show();
+            @Override
+            public void onResponse(String response, int id) {
+                GetSystemInfoJson getSystemInfoJson = new GsonBuilder().create().fromJson(response, GetSystemInfoJson.class);
+                List<GetSystemInfoJson> getSystemInfoJsonList = getSystemInfoJson.getTicketTask();
+                for (GetSystemInfoJson getSystemInfoJson1 : getSystemInfoJsonList) {
+                    TicketTask ticketTask = new TicketTask();
+                    ticketTask.setModel_number(getSystemInfoJson1.getModel_number());
+                    ticketTask.setSwid(getSystemInfoJson1.getSwid());
+                    ticketTask.setHwid(getSystemInfoJson1.getHwid());
+                    ticketTask.setSn(getSystemInfoJson1.getSn());
+                    ticketTask.setMac(getSystemInfoJson1.getMac());
+                    ticketTask.setAccomplish(false);
+                    ticketTask.setTicket_id(ticketID);
+                    ticketTask.saveOrUpdate(DEVICE_SN + "=?", getSystemInfoJson1.getSn());
+                    Logger.e(getSystemInfoJson1.getSn());
+                }
+
+                Snackbar.make(view, "刷新在线设备列表完成", Snackbar.LENGTH_LONG)
+                        .setAction("跳转到当前任务", v -> startActivity(new Intent(OTRSLockActivity.this,OTRSTicketTaskActivity.class)))
+                        .show();
+            }
+        });
+
     }
 
     @Override
