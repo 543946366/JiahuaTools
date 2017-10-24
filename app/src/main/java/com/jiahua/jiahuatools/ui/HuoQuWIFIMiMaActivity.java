@@ -147,6 +147,9 @@ public class HuoQuWIFIMiMaActivity extends AppCompatActivity implements Consts {
             case android.R.id.home:
                 finish();
                 return true;
+
+            default:
+                break;
         }
         return super.onOptionsItemSelected(item);
 

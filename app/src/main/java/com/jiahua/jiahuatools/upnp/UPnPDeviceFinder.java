@@ -67,10 +67,10 @@ public class UPnPDeviceFinder {
 		}
 	}
 
-	public Observable<UPnPDevice> observe() {
-		return Observable.create(new Observable.OnSubscribe<UPnPDevice>() {
+	public Observable<UpnpDevice> observe() {
+		return Observable.create(new Observable.OnSubscribe<UpnpDevice>() {
 			@Override
-			public void call(Subscriber<? super UPnPDevice> subscriber) {
+			public void call(Subscriber<? super UpnpDevice> subscriber) {
 				if (mSock == null) {
 					subscriber.onError(new Exception("socket is null"));
 					return;
@@ -87,7 +87,7 @@ public class UPnPDeviceFinder {
 						String receivedString = new String(dp.getData());
 						receivedString = receivedString.substring(0, dp.getLength());
 						Log.e(TAG, "found dev: " + receivedString);
-						UPnPDevice device = UPnPDevice.getInstance(receivedString);
+						UpnpDevice device = UpnpDevice.getInstance(receivedString);
 						if (device != null) {
 							subscriber.onNext(device);
 						}

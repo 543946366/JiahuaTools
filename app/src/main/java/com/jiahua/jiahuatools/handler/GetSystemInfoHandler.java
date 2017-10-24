@@ -137,7 +137,7 @@ public class GetSystemInfoHandler extends Handler implements Consts {
                             Log.d("TAG", "当前坂本为：" + str.split(":")[0].trim());
                             if (str.split(":")[0].trim().equals(dangQianBanBenName)) {
                                 Log.d("TAG", "下个升级的坂本为：" + str.split(":")[1]);
-                                if (str.split(":")[1].equals("new")) {
+                                if ("new".equals(str.split(":")[1])) {
                                     activity.tvNewGuanLiDevVersion.setText("当前已是最新版本，无需升级！");
                                 } else {
                                     activity.tvNewGuanLiDevVersion.setText("有新版本：" + str.split(":")[1] + "\n请尽快联系4S店或者厂家升级！");

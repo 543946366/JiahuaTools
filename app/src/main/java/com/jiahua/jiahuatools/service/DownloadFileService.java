@@ -81,7 +81,8 @@ public class DownloadFileService extends Service implements Consts {
             String action = intent.getAction();
             // 判断Action
             if (ACTION_DOWNLOAD_OR_PAUSE.equals(action)) {
-                if(isDownload){ // 判断当前是否在下载状态
+                // 判断当前是否在下载状态
+                if(isDownload){
 
                     // 发送广播，告知Activity已经暂停
                     Intent intentStop = new Intent();
@@ -100,7 +101,8 @@ public class DownloadFileService extends Service implements Consts {
                     L.e("固件名字"+guJianName);
                     downloadFile();
                 }
-            }else if(ACTION_IS_DOWNLOAD.equals(action)){ //回应activity询问当前是否在下载状态的请求
+            //回应activity询问当前是否在下载状态的请求
+            }else if(ACTION_IS_DOWNLOAD.equals(action)){
                 if (isDownload){
                     sendBroadcast(new Intent().setAction(ACTION_SET_DOWNLOAD_STATE));
                 }else {
@@ -176,11 +178,11 @@ public class DownloadFileService extends Service implements Consts {
 
         //String url = "http://120.27.94.20:10080/vendor/imotom/" + guJianName;
         String url = "http://120.27.94.20:10080/vendor/imotom/" + upgradeText;
-        call = OkHttpUtils//
-                .get()//
-                .url(url)//
+        call = OkHttpUtils
+                .get()
+                .url(url)
                 .build();
-        call.execute(new FileCallBack(Environment.getExternalStorageDirectory().getAbsolutePath(), guJianName)//
+        call.execute(new FileCallBack(Environment.getExternalStorageDirectory().getAbsolutePath(), guJianName)
         {
 
             @Override

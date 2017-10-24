@@ -70,17 +70,21 @@ public class OTRSTicketTaskActivity extends AppCompatActivity {
         //ticketTaskAdapter = new TicketTaskAdapter(ticketTaskList);
 
         ticketTaskAdapter.setOnItemClickListener((adapter, view, position) -> {
-            //TODO 给当前工单任务做标记
-            TicketTask ticketTask = new TicketTask();
-            ticketTask.setFlag(true);
-            ticketTask.saveOrUpdate(Consts.DEVICE_SN + "=?", ticketTaskList.get(position).getSn());
-            //ticketTaskList.get(position).setAccomplish(true);
-            //ticketTaskAdapter.notifyDataSetChanged();
-            myTicketTaskSn = ticketTaskList.get(position).getSn();
-            myTicketTaskPosition = position;
+            if(ticketTaskList.get(position).isAccomplish()){
+                Snackbar.make(view,"该项任务已完成，请完成其他任务！",Snackbar.LENGTH_LONG).show();
+            }else {
+                //TODO 给当前工单任务做标记
+                TicketTask ticketTask = new TicketTask();
+                ticketTask.setFlag(true);
+                ticketTask.saveOrUpdate(Consts.DEVICE_SN + "=?", ticketTaskList.get(position).getSn());
+                //ticketTaskList.get(position).setAccomplish(true);
+                //ticketTaskAdapter.notifyDataSetChanged();
+                myTicketTaskSn = ticketTaskList.get(position).getSn();
+                myTicketTaskPosition = position;
 
-            startActivity(new Intent(OTRSTicketTaskActivity.this, MainActivity.class).setFlags(Consts.OTRSTTA_to_MA)
-                    .putExtra(INTENT_display_model_number,ticketTaskList.get(position).getModel_number()));
+                startActivity(new Intent(OTRSTicketTaskActivity.this, MainActivity.class).setFlags(Consts.OTRSTTA_to_MA)
+                        .putExtra(INTENT_display_model_number, ticketTaskList.get(position).getModel_number()));
+            }
         });
         rvTest.setLayoutManager(new LinearLayoutManager(OTRSTicketTaskActivity.this));
         rvTest.setAdapter(ticketTaskAdapter);
@@ -96,11 +100,13 @@ public class OTRSTicketTaskActivity extends AppCompatActivity {
 
     @Override
     protected void onRestart() {
-        TicketTask ticketTask = DataSupport.where("sn=?",myTicketTaskSn).findFirst(TicketTask.class);
-        if(ticketTask.isAccomplish()) {
-            ticketTaskList.get(myTicketTaskPosition).setAccomplish(true);
-            Logger.e(ticketTaskList.get(myTicketTaskPosition).isAccomplish() + "");
-            ticketTaskAdapter.notifyDataSetChanged();
+        if(DataSupport.isExist(TicketTask.class)) {
+            TicketTask ticketTask = DataSupport.where("sn=?", myTicketTaskSn).findFirst(TicketTask.class);
+            if (ticketTask.isAccomplish()) {
+                ticketTaskList.get(myTicketTaskPosition).setAccomplish(true);
+                Logger.e(ticketTaskList.get(myTicketTaskPosition).isAccomplish() + "");
+                ticketTaskAdapter.notifyDataSetChanged();
+            }
         }
         super.onRestart();
     }
@@ -136,23 +142,23 @@ public class OTRSTicketTaskActivity extends AppCompatActivity {
                     + TicketId + "/dd?UserLogin=" + user + "&Password=" + password;
             OkHttpUtils
                     .postString()
-                    .content("{\"Ticket\":{\"Owner\":\"zhipeng.huang@jiahua.win\"}}")
+                    .content("{\"Ticket\":{\"Owner\":\"hao.xie@jiahua.win\"}}")
                     .url(idUrl).build().execute(new StringCallback() {
                 @Override
                 public void onError(Call call, Exception e, int id) {
+                    Snackbar.make(view, "提交失败，请确认是否有网络再提交！", Snackbar.LENGTH_LONG)
+                            .show();
+                    cpbOtrsTicketTaskOk.setProgress(-1);
                     Logger.d(e.getMessage());
                 }
 
                 @Override
                 public void onResponse(String response, int id) {
                     Logger.d(response);
+                    DataSupport.deleteAll(TicketTask.class);
 
-                }
-            });
-            DataSupport.deleteAll(TicketTask.class);
-
-            ticketTaskList.clear();
-            ticketTaskAdapter.notifyDataSetChanged();
+                    ticketTaskList.clear();
+                    ticketTaskAdapter.notifyDataSetChanged();
        /* new MaterialDialog.Builder(this)
                 .title("提交成功")
                 .content("全部工单任务提交完成！\n请下载其他工单任务！")
@@ -160,11 +166,15 @@ public class OTRSTicketTaskActivity extends AppCompatActivity {
                 .positiveColor(Color.RED)
                 .cancelable(false)
                 .onPositive((dialog, which) -> dialog.dismiss()).show();*/
-            Logger.e("完成");
+                    Logger.e("完成");
 
-            Snackbar.make(view, "全部工单任务提交完成！\n请下载其他工单任务！", Snackbar.LENGTH_LONG)
-                    .show();
-            cpbOtrsTicketTaskOk.setProgress(100);
+                    Snackbar.make(view, "全部工单任务提交完成！\n请下载其他工单任务！", Snackbar.LENGTH_LONG)
+                            .show();
+                    cpbOtrsTicketTaskOk.setProgress(100);
+                }
+            });
+
+            cpbOtrsTicketTaskOk.setProgress(0);
         }else {
             Snackbar.make(view, "当前无任务可提交！\n请下载其他工单任务！", Snackbar.LENGTH_LONG)
                     .show();

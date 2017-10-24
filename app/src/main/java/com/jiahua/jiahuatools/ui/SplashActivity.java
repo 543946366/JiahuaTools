@@ -8,7 +8,12 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.WindowManager;
 
+import com.jiahua.jiahuatools.MainActivity;
 import com.jiahua.jiahuatools.R;
+import com.jiahua.jiahuatools.bean.UserAndPassword;
+import com.orhanobut.logger.Logger;
+
+import org.litepal.crud.DataSupport;
 
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
@@ -31,10 +36,15 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void jump() {
-        new Handler().postDelayed(() ->{
-                startActivity(new Intent(SplashActivity.this,AccountLoginActivity.class));
-                finish();
-        },500);
+        new Handler().postDelayed(() -> {
+            if (DataSupport.isExist(UserAndPassword.class)) {
+                startActivity(new Intent(this, MainActivity.class));
+            } else {
+                startActivity(new Intent(SplashActivity.this, AccountLoginActivity.class));
+                Logger.e("当前没有账号记录");
+            }
+            finish();
+        }, 500);
     }
 
     @NeedsPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)

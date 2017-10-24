@@ -56,8 +56,8 @@ public interface Consts {
      * 网址
      */
     //导航APP下载网址
-    //String URL_downloadNavAPPUrl = "http://120.27.94.20:10080/vendor/imotom/APP/Android/navigation_v1.0.5.apk";
-    String URL_downloadNavAPPUrl = "http://120.27.94.20:10080/vendor/imotom/APP/Android/" + Consts.NAVIGATION_APP_NAME;
+    //String URL_DOWNLOAD_NAVAPP_URL = "http://120.27.94.20:10080/vendor/imotom/APP/Android/navigation_v1.0.5.apk";
+    String URL_DOWNLOAD_NAVAPP_URL = "http://120.27.94.20:10080/vendor/imotom/APP/Android/" + Consts.NAVIGATION_APP_NAME;
     //国科设备升级文档查询
     String URL_inquire_guoKe_dev_update_doc = "http://120.27.94.20:10080/vendor/imotom/MT1828/upgrade.txt";
     //车机设备升级文档查询

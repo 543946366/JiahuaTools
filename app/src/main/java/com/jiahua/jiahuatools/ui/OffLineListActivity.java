@@ -87,6 +87,9 @@ public class OffLineListActivity extends AppCompatActivity implements Consts{
                 FileUtils.writeTxtToFile(display_model_number_add_serial_number, Environment.getExternalStorageDirectory().getPath() + "/imotom/", "DeviceOffLineNumber.txt");
 
                 break;
+
+            default:
+                break;
         }
     }
 
@@ -97,6 +100,9 @@ public class OffLineListActivity extends AppCompatActivity implements Consts{
             case android.R.id.home:
                 finish();
                 return true;
+
+            default:
+                break;
         }
         return super.onOptionsItemSelected(item);
 

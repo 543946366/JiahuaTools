@@ -1,7 +1,9 @@
 package com.jiahua.jiahuatools.ui;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
@@ -9,7 +11,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.jiahua.jiahuatools.R;
+import com.jiahua.jiahuatools.bean.TicketTask;
+import com.jiahua.jiahuatools.bean.UserAndPassword;
+import com.jiahua.jiahuatools.utils.ActivityCollector;
+
+import org.litepal.crud.DataSupport;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -58,6 +66,29 @@ public class OTRSMainActivity extends AppCompatActivity {
                 break;
 
             case R.id.cv_otrsMain_out:
+                if(DataSupport.isExist(TicketTask.class)){
+                    Snackbar.make(view,"当前账号还有未完成任务，请提交当前任务后再退出！",Snackbar.LENGTH_LONG)
+                            .show();
+                }else {
+                    new MaterialDialog.Builder(this)
+                            .title("退出登录")
+                            .content("退出登录将会取消自动登录，是否确认退出？")
+                            .positiveText("确定退出")
+                            .onPositive((dialog, which) -> {
+                                DataSupport.deleteAll(UserAndPassword.class);
+                                startActivity(new Intent(OTRSMainActivity.this, AccountLoginActivity.class));
+                                finish();
+                                ActivityCollector.finishAll();
+                            })
+                            .negativeText("取消")
+                            .onNegative((dialog, which) -> dialog.dismiss())
+                            .positiveColor(Color.RED)
+                            .negativeColor(Color.RED)
+                            .show();
+                }
+                break;
+
+            default:
                 break;
         }
     }
@@ -68,6 +99,9 @@ public class OTRSMainActivity extends AppCompatActivity {
             case android.R.id.home:
                 finish();
                 return true;
+
+            default:
+                break;
         }
         return super.onOptionsItemSelected(item);
 

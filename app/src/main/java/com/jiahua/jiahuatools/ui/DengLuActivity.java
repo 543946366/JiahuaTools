@@ -144,6 +144,8 @@ public class DengLuActivity extends AppCompatActivity implements View.OnClickLis
                 dengLu();
                 break;
 
+            default:
+                break;
         }
     }
 
@@ -187,7 +189,8 @@ public class DengLuActivity extends AppCompatActivity implements View.OnClickLis
                     if (myUername.isEmpty() || myPassword.isEmpty()) {
                         Message message = new Message();
                         message.what = UPDATE_TEXT;
-                        handler.sendMessage(message); // 将Message对象发送出去
+                        // 将Message对象发送出去
+                        handler.sendMessage(message);
                     } else {
                         String authorizationHaderValue = DigestAuthenticationUtil.startDigestGet(response.header("WWW-Authenticate"),myUername,myPassword,"/");
                         L.e(authorizationHaderValue);
@@ -206,12 +209,14 @@ public class DengLuActivity extends AppCompatActivity implements View.OnClickLis
                         if (response.code() == 200) {
                             Message message = new Message();
                             message.what = CHENG_GONG_TEXT;
-                            handler.sendMessage(message); // 将Message对象发送出去
+                            // 将Message对象发送出去
+                            handler.sendMessage(message);
 
                         } else {
                             Message message = new Message();
                             message.what = SHI_BAI_TEXT;
-                            handler.sendMessage(message); // 将Message对象发送出去
+                            // 将Message对象发送出去
+                            handler.sendMessage(message);
 
                         }
                         // 打印响应的信息

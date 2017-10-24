@@ -23,16 +23,19 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.jiahua.jiahuatools.adapter.UPnPDeviceOffLineAdapter;
 import com.jiahua.jiahuatools.bean.DeviceOffLine;
+import com.jiahua.jiahuatools.bean.UserAndPassword;
 import com.jiahua.jiahuatools.consts.Consts;
 import com.jiahua.jiahuatools.ui.NewOffLineListActivity;
 import com.jiahua.jiahuatools.ui.OTRSMainActivity;
 import com.jiahua.jiahuatools.upnp.UPnPDeviceAdapter;
 import com.jiahua.jiahuatools.upnp.UPnPDeviceFinder;
+import com.jiahua.jiahuatools.utils.ActivityCollector;
 import com.jiahua.jiahuatools.utils.PasswordHelp;
 import com.orhanobut.logger.Logger;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -64,10 +67,16 @@ public class MainActivity extends AppCompatActivity
     //离线用的RecyclerVIew
     @BindView(R.id.rv_main_offLine)
     RecyclerView offLineRecyclerView;
-    FloatingActionButton fab;
-
     //离线设备数据
     List<DeviceOffLine> deviceOffLineList = new ArrayList<>();
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.fab)
+    FloatingActionButton fab;
+    @BindView(R.id.nav_view)
+    NavigationView navView;
+    @BindView(R.id.drawer_layout)
+    DrawerLayout drawerLayout;
 
     //处理离线设备的添加和移除
     private Handler removeDataHandler = new MyMainHandler(MainActivity.this);
@@ -103,10 +112,10 @@ public class MainActivity extends AppCompatActivity
                             .content("上次升级还未重启系统文件，需要马上重启系统文件！是否马上重启?")
                             .positiveText("重启")
                             .onPositive(
-                                    (dialog, which) -> OkHttpUtils//
-                                            .post()//
-                                            .url(u)//
-                                            .build()//
+                                    (dialog, which) -> OkHttpUtils
+                                            .post()
+                                            .url(u)
+                                            .build()
                                             .execute(new StringCallback() {
                                                 @Override
                                                 public void onError(Call call, Exception e, int id) {
@@ -153,7 +162,7 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //toolbar.setTitle("");
         //toolbar.setTitleTextColor(getResources().getColor(R.color.md_yellow_500));
-        toolbar.setTitleTextColor(ContextCompat.getColor(this,R.color.md_yellow_500));
+        toolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.md_yellow_500));
         setSupportActionBar(toolbar);
 
         //设置标题栏左上角菜单图标的动画效果
@@ -172,18 +181,26 @@ public class MainActivity extends AppCompatActivity
         //设置侧边栏的选项点击
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        View view = navigationView.getHeaderView(0);
+
+        TextView tv_nav_header_userName = (TextView) view.findViewById(R.id.tv_nav_header_main);
+        UserAndPassword userAndPassword = DataSupport.findFirst(UserAndPassword.class);
+        tv_nav_header_userName.setText(userAndPassword.getUser());
 
         init();
     }
 
     private void init() {
+        //加入活动列表
+        ActivityCollector.addActivity(this);
+
         //初始化在线设备显示的adapter
         mAdapter = new UPnPDeviceAdapter(this, removeDataHandler);
         vRecycler.setLayoutManager(new LinearLayoutManager(this));
         vRecycler.setVisibility(View.INVISIBLE);
         vRecycler.setAdapter(mAdapter);
 
-        if(getIntent().getFlags() == OTRSTTA_to_MA){
+        if (getIntent().getFlags() == OTRSTTA_to_MA) {
             fab.setVisibility(View.GONE);
         }
         liXianDev();
@@ -222,10 +239,16 @@ public class MainActivity extends AppCompatActivity
                         .content("是否删除离线设备:\n" + deviceOffLineList.get(position).getDevice_model_number_add_serial_number())
                         .positiveText("删除")
                         .onPositive(
-                                (dialog, which) -> DataSupport
-                                        .deleteAll(DeviceOffLine.class, DEVICE_MODEL_NUMBER_ADD_SERIAL_NUMBER + "=?",
-                                                deviceOffLineList.get(position).getDevice_model_number_add_serial_number())
+                                (dialog, which) -> {
+                                    DataSupport
+                                            .deleteAll(DeviceOffLine.class, DEVICE_MODEL_NUMBER_ADD_SERIAL_NUMBER + "=?",
+                                                    deviceOffLineList.get(position).getDevice_model_number_add_serial_number());
+                                    deviceOffLineList.remove(position);
+                                    uPnPDeviceOffLineAdapter.notifyDataSetChanged();
+                                }
                         )
+                        .positiveColor(Color.RED)
+                        .negativeColor(Color.RED)
                         .negativeText("取消")
                         .onNegative(
                                 (dialog, which) -> dialog.dismiss()
@@ -260,7 +283,7 @@ public class MainActivity extends AppCompatActivity
                     // This is the first device found.
                     if (mAdapter.getItemCount() == 0) {
                             /*vSpinner.animate()
-									.alpha(0f)
+                                    .alpha(0f)
 									.setDuration(1000)
 									.setInterpolator(new AccelerateInterpolator())
 									.start();*/
@@ -277,10 +300,17 @@ public class MainActivity extends AppCompatActivity
 
                     try {
                         //搜索到的Upnp设备含有目拓或者是加华的制造商才显示在线
+                        //TODO
+                        if (getIntent().getFlags() == OTRSTTA_to_MA ?
+                                device.getModelNumber().equals(getIntent().getStringExtra(INTENT_display_model_number))
+                                : (device.getManufacturer().equals(Manufacturer_Imotom)
+                                || device.getManufacturer().equals(Manufacturer_Jiahua))) {
+                        /*}
+
                         if (!((device.getManufacturer().equals(Manufacturer_Imotom)
                                 || device.getManufacturer().equals(Manufacturer_Jiahua))
                                 && getIntent().getFlags() == OTRSTTA_to_MA)
-                                || device.getModelNumber().equals(getIntent().getStringExtra(INTENT_display_model_number))) {
+                                || device.getModelNumber().equals(getIntent().getStringExtra(INTENT_display_model_number))) {*/
                             mAdapter.add(device);
                             //offLineAdapter.remove(deviceOffLine);
                             //如果upnp设备在线，则移除离线设备的显示

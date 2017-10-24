@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -87,15 +88,14 @@ public class CheckDevVersionActivity extends AppCompatActivity implements Consts
                         SPUtils.remove(activity, "升级版本号");
                     }
 
-                    if (String.valueOf(msg.obj).equals("当前已是最新版本，无需升级！")) {
+                    if ("当前已是最新版本，无需升级！".equals(String.valueOf(msg.obj))) {
                         activity.tv_log.setText("当前版本为:" + activity.dangQianBanBenName + "\n" + "当前已是最新版本，无需升级！");
                         SPUtils.put(activity, "升级版本号", "已是最新");
                     } else {
                         activity.tv_log.setText("当前版本为:" + activity.dangQianBanBenName + "\n" + "有新版本：" + activity.guJianName + "\n" + "请尽快联系4S店或者厂家升级！");
                         //activity.btn_shengJi.setVisibility(View.VISIBLE);
 
-                        //本地保存下个固件升级版本号
-
+                        // 本地保存下个固件升级版本号
                         SPUtils.put(activity, "升级版本号", activity.guJianName);
                     }
                     break;
@@ -131,7 +131,7 @@ public class CheckDevVersionActivity extends AppCompatActivity implements Consts
                             Log.d("TAG", "当前坂本为：" + str.split(":")[0].trim());
                             if (str.split(":")[0].trim().equals(dangQianBanBenName)) {
                                 Log.d("TAG", "下个升级的坂本为：" + str.split(":")[1]);
-                                if (str.split(":")[1].equals("new")) {
+                                if ("new".equals(str.split(":")[1])) {
                                     guJianName = "当前已是最新版本，无需升级！";
                                 } else {
                                     guJianName = str.split(":")[1] + ".bin";
@@ -139,7 +139,8 @@ public class CheckDevVersionActivity extends AppCompatActivity implements Consts
                                 Message message = new Message();
                                 message.what = NEXT_BANBENHAO_TEXT;
                                 message.obj = guJianName;
-                                logTextHandler.sendMessage(message); // 将Message对象发送出去
+                                // 将Message对象发送出去
+                                logTextHandler.sendMessage(message);
                                 return;
                             } else {
                                 //当网络上无此版本号时，提示无需升级
@@ -147,7 +148,8 @@ public class CheckDevVersionActivity extends AppCompatActivity implements Consts
                                 Message message = new Message();
                                 message.what = NEXT_BANBENHAO_TEXT;
                                 message.obj = guJianName;
-                                logTextHandler.sendMessage(message); // 将Message对象发送出去
+                                // 将Message对象发送出去
+                                logTextHandler.sendMessage(message);
                             }
                         }
 
@@ -163,7 +165,7 @@ public class CheckDevVersionActivity extends AppCompatActivity implements Consts
 
         ButterKnife.bind(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitleTextColor(getResources().getColor(R.color.md_yellow_500));
+        toolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.md_yellow_500));
         setSupportActionBar(toolbar);
 
         if (getSupportActionBar() != null) {
@@ -206,6 +208,9 @@ public class CheckDevVersionActivity extends AppCompatActivity implements Consts
             case android.R.id.home:
                 finish();
                 return true;
+
+            default:
+                break;
         }
         return super.onOptionsItemSelected(item);
 

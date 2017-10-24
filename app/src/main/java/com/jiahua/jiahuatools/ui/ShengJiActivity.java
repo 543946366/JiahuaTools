@@ -109,6 +109,9 @@ public class ShengJiActivity extends AppCompatActivity implements View.OnClickLi
                 sendBroadcast(new Intent().setAction(ACTION_DOWNLOAD_OR_PAUSE).putExtra(EXTRA_DOWNLOAD_GUJIAN_NAME_TEXT, "MT1828/"+guJianName));
 
                 break;
+
+            default:
+                break;
         }
     }
 
@@ -182,7 +185,7 @@ public class ShengJiActivity extends AppCompatActivity implements View.OnClickLi
                         activity.dangQianBanBenName = String.valueOf(msg.obj).split(":")[2].substring(1, ((String) msg.obj).split(":")[2].length() - 2);
 
                     }
-                    activity.tv_log.setText(String.valueOf("当前版本为:" + activity.dangQianBanBenName));
+                    activity.tvLog.setText(String.valueOf("当前版本为:" + activity.dangQianBanBenName));
 
                     DeviceOffLine deviceOffLine = new DeviceOffLine();
                     deviceOffLine.setDevice_friendly_name(activity.displayFriendlyName);
@@ -267,7 +270,7 @@ public class ShengJiActivity extends AppCompatActivity implements View.OnClickLi
                         SPUtils.remove(activity, "升级版本号");
                     }
 
-                    if (String.valueOf(msg.obj).equals("当前已是最新版本，无需升级！")) {
+                    if ("当前已是最新版本，无需升级！".equals(String.valueOf(msg.obj))) {
                         activity.tv_log.setText("当前版本为:" + activity.dangQianBanBenName + "\n" + "当前已是最新版本，无需升级！");
                         SPUtils.put(activity, "升级版本号", "已是最新");
                     } else {
@@ -311,7 +314,7 @@ public class ShengJiActivity extends AppCompatActivity implements View.OnClickLi
                             Log.d("TAG", "当前坂本为：" + str.split(":")[0].trim());
                             if (str.split(":")[0].trim().equals(dangQianBanBenName)) {
                                 Log.d("TAG", "下个升级的坂本为：" + str.split(":")[1]);
-                                if (str.split(":")[1].equals("new")) {
+                                if ("new".equals(str.split(":")[1])) {
                                     guJianName = "当前已是最新版本，无需升级！";
                                 } else {
                                     guJianName = str.split(":")[1] + ".bin";
@@ -319,7 +322,8 @@ public class ShengJiActivity extends AppCompatActivity implements View.OnClickLi
                                 Message message = new Message();
                                 message.what = NEXT_BANBENHAO_TEXT;
                                 message.obj = guJianName;
-                                logTextHandler.sendMessage(message); // 将Message对象发送出去
+                                // 将Message对象发送出去
+                                logTextHandler.sendMessage(message);
                                 return;
                             } else {
                                 //当网络上无此版本号时，提示无需升级
@@ -327,7 +331,8 @@ public class ShengJiActivity extends AppCompatActivity implements View.OnClickLi
                                 Message message = new Message();
                                 message.what = NEXT_BANBENHAO_TEXT;
                                 message.obj = guJianName;
-                                logTextHandler.sendMessage(message); // 将Message对象发送出去
+                                // 将Message对象发送出去
+                                logTextHandler.sendMessage(message);
                             }
                         }
 
@@ -408,10 +413,10 @@ public class ShengJiActivity extends AppCompatActivity implements View.OnClickLi
     private void shuaXin() {
         //String url = myBaseUrl + "upgrade";
         String url = myBaseUrl + "reboot";
-        OkHttpUtils//
-                .get()//
-                .url(url)//
-                .build()//
+        OkHttpUtils
+                .get()
+                .url(url)
+                .build()
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
@@ -421,7 +426,7 @@ public class ShengJiActivity extends AppCompatActivity implements View.OnClickLi
 
                     @Override
                     public void onResponse(String response, int id) {
-                        //tv_log.setText(response);
+                        //tvLog.setText(response);
                         error_text = response;
                         if (response.contains("固件导入成功")) {
                             stopHandleLoop();
@@ -444,19 +449,19 @@ public class ShengJiActivity extends AppCompatActivity implements View.OnClickLi
         dialog.setMessage("固件升级成功！需要立即重启!请点击重启车机设备！");
         dialog.setButton(AlertDialog.BUTTON_POSITIVE, "重启", (d, i) -> {
 
-            OkHttpUtils//
-                    .post()//
-                    .url(url)//
-                    .build()//
+            OkHttpUtils
+                    .post()
+                    .url(url)
+                    .build()
                     .execute(new StringCallback() {
                         @Override
                         public void onError(Call call, Exception e, int id) {
-                            //tv_log.setText("重启失败！\n" + "失败信息：" + e.toString());
+                            //tvLog.setText("重启失败！\n" + "失败信息：" + e.toString());
                         }
 
                         @Override
                         public void onResponse(String response, int id) {
-                            //tv_log.setText("重启设备成功！\n" + response);
+                            //tvLog.setText("重启设备成功！\n" + response);
                         }
 
                     });
@@ -471,7 +476,7 @@ public class ShengJiActivity extends AppCompatActivity implements View.OnClickLi
      * 点击升级的操作
      */
     private void dianJiShengJi() {
-        if (guJianName.equals("当前已是最新版本，无需升级！")) {
+        if ("当前已是最新版本，无需升级！".equals(guJianName)) {
             tv_log.setText(guJianName);
         } else {
 
@@ -495,18 +500,18 @@ public class ShengJiActivity extends AppCompatActivity implements View.OnClickLi
         /*Map<String, String> params = new HashMap<>();
         params.put("username", "目拓");*/
 
-        Map<String, String> headers = new HashMap<>();
+        Map<String, String> headers = new HashMap<>(16);
         headers.put("APP-Key", "APP-Secret222");
         headers.put("APP-Secret", "APP-Secret111");
         //headers.put("Cookie", JSESSIONID);
 
         String url = myBaseUrl + "upload";
-        OkHttpUtils.post()//
-                .addFile("uploadFile", guJianName, file)//
-                .url(url)//
-                .params(null)//
-                .headers(headers)//
-                .build()//
+        OkHttpUtils.post()
+                .addFile("uploadFile", guJianName, file)
+                .url(url)
+                .params(null)
+                .headers(headers)
+                .build()
                 .execute(new MyStringCallback());
     }
 
@@ -596,6 +601,9 @@ public class ShengJiActivity extends AppCompatActivity implements View.OnClickLi
             case android.R.id.home:
                 finish();
                 return true;
+
+            default:
+                break;
         }
         return super.onOptionsItemSelected(item);
 

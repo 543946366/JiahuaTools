@@ -12,7 +12,7 @@ import java.security.NoSuchAlgorithmException;
  */
 class MD5Object {
     // 全局数组
-    private final static String[] strDigits = { "0", "1", "2", "3", "4", "5",
+    private final static String[] STR_DIGITS = { "0", "1", "2", "3", "4", "5",
             "6", "7", "8", "9", "a", "b", "c", "d", "e", "f" };
 
     public MD5Object() {
@@ -27,7 +27,7 @@ class MD5Object {
         }
         int iD1 = iRet / 16;
         int iD2 = iRet % 16;
-        return strDigits[iD1] + strDigits[iD2];
+        return STR_DIGITS[iD1] + STR_DIGITS[iD2];
     }
 
     // 转换字节数组为16进制字串

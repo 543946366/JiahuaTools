@@ -55,7 +55,7 @@ public class UPnPDeviceOffLineAdapter extends RecyclerView.Adapter<UPnPDeviceOff
                 devName = "[unnamed]";
             }
             holder.friendlyName.setText(devName + "（离线）\n(" + item.getDevice_model_number_add_serial_number() + ")");
-            if (item.getDevice_model_number() == null || item.getDevice_model_number().equals("")) {
+            if (item.getDevice_model_number() == null || "".equals(item.getDevice_model_number())) {
                 holder.icon.setImageResource(R.mipmap.cheji_off_icon);
             } else {
                 if (item.getDevice_model_number().contains(Consts.MT_guoKe_model_number)) {

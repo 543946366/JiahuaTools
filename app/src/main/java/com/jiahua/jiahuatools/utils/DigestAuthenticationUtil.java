@@ -108,7 +108,8 @@ public class DigestAuthenticationUtil {
                                     Message message = new Message();
                                     message.what = NO_TEXT;
                                     message.obj = e.getMessage();
-                                    handler.sendMessage(message); // 将Message对象发送出去
+                                    // 将Message对象发送出去
+                                    handler.sendMessage(message);
                                 }
 
                                 @Override
@@ -119,7 +120,8 @@ public class DigestAuthenticationUtil {
                                     message.what = OK_TEXT;
                                     //message.obj = response.split(":")[1].substring(1, response.split(":")[1].length() - 2);
                                     message.obj = response;
-                                    handler.sendMessage(message); // 将Message对象发送出去
+                                    // 将Message对象发送出去
+                                    handler.sendMessage(message);
                                 }
                             });
                     // 打印响应码
@@ -217,7 +219,8 @@ public class DigestAuthenticationUtil {
                                     Message message = new Message();
                                     message.what = NO_TEXT;
                                     message.obj = e.getMessage();
-                                    handler.sendMessage(message); // 将Message对象发送出去
+                                    // 将Message对象发送出去
+                                    handler.sendMessage(message);
                                 }
 
                                 @Override
@@ -228,7 +231,8 @@ public class DigestAuthenticationUtil {
                                     message.what = OK_TEXT;
                                     //message.obj = response.split(":")[1].substring(1, response.split(":")[1].length() - 2);
                                     message.obj = response;
-                                    handler.sendMessage(message); // 将Message对象发送出去
+                                    // 将Message对象发送出去
+                                    handler.sendMessage(message);
                                 }
                             });
                     // 打印响应码

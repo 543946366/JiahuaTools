@@ -108,7 +108,7 @@ public class XiuGaiMiMaActivity extends AppCompatActivity implements Consts {
             if (et_again_XiuGaiMiMa.getText().toString().isEmpty() || et_newPassword_XiuGaiMiMa.getText().toString().isEmpty()) {
                 tvXiuGaiMiMaHint.setText("输入的新密码不能为空！");
                 //Toast.makeText(this, "输入的新密码不能为空！", Toast.LENGTH_SHORT).show();
-            } else if (et_newPassword_XiuGaiMiMa.getText().toString().equals("12345678") || et_again_XiuGaiMiMa.getText().toString().equals("12345678")) {
+            } else if ("12345678".equals(et_newPassword_XiuGaiMiMa.getText().toString()) || "12345678".equals(et_again_XiuGaiMiMa.getText().toString())) {
                 tvXiuGaiMiMaHint.setText(String.valueOf("出于安全考虑，新密码不能为初始密码12345678！"));
                 //Toast.makeText(this, "出于安全考虑，新密码不能为初始密码12345678！", Toast.LENGTH_SHORT).show();
                 et_newPassword_XiuGaiMiMa.setText("");
@@ -166,6 +166,9 @@ public class XiuGaiMiMaActivity extends AppCompatActivity implements Consts {
             case android.R.id.home:
                 finish();
                 return true;
+
+            default:
+                break;
         }
         return super.onOptionsItemSelected(item);
 

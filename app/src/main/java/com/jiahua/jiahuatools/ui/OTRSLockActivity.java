@@ -60,11 +60,11 @@ public class OTRSLockActivity extends AppCompatActivity implements Consts {
         String user = userAndPassword.getUser();
         String password = userAndPassword.getPassword();
         String OwnerID = null;
-        if(user.equals("gzjh100001@jiahua.win")){
+        if("gzjh100001@jiahua.win".equals(user)){
             OwnerID = "13";
-        }else if(user.equals("gzjh100002@jiahua.win")){
+        }else if("gzjh100002@jiahua.win".equals(user)){
             OwnerID = "14";
-        }else if(user.equals("zhipeng.huang@jiahua.win")){
+        }else if("zhipeng.huang@jiahua.win".equals(user)){
             OwnerID = "3";
         }
         String searchUrl = "https://imotom01.dd.ezbox.cc:34443/otrs/nph-genericinterface.pl/Webservice/testWeb/Ticket?UserLogin=" +
@@ -79,7 +79,7 @@ public class OTRSLockActivity extends AppCompatActivity implements Consts {
             @Override
             public void onResponse(String response, int id) {
                 Logger.e(response);
-                if(response.equals("{}")){
+                if("{}".equals(response)){
                     Snackbar.make(toolbar, "当前无锁定工单任务", Snackbar.LENGTH_LONG)
                             .show();
                     return;
@@ -136,16 +136,7 @@ public class OTRSLockActivity extends AppCompatActivity implements Consts {
                 "{\"model_number\":\"MT1767\",\"swid\":\"1.0.0.1\",\"hwid\":\"MT1767\",\"sn\":\"MT1767000001\",\"mac\":\"3c:33:00:00:00:01\"},\n" +
                 "{\"model_number\":\"MT1767\",\"swid\":\"1.0.0.1\",\"hwid\":\"MT1767V12\",\"sn\":\"MT1767000002\",\"mac\":\"00:20:18:00:00:01\"},\n" +
                 "{\"model_number\":\"MT1767\",\"swid\":\"1.0.0.1\",\"hwid\":\"MT1767V12\",\"sn\":\"MT1767000003\",\"mac\":\"00:20:18:00:00:01\"},\n" +
-                "{\"model_number\":\"MT1767\",\"swid\":\"1.0.0.1\",\"hwid\":\"MT1767V12\",\"sn\":\"MT1767000004\",\"mac\":\"00:20:18:00:00:01\"},\n" +
-                "{\"model_number\":\"MT1767\",\"swid\":\"1.0.0.1\",\"hwid\":\"MT1767V12\",\"sn\":\"MT1767000005\",\"mac\":\"00:20:18:00:00:01\"},\n" +
-                "{\"model_number\":\"MT1767\",\"swid\":\"1.0.0.1\",\"hwid\":\"MT1767V12\",\"sn\":\"MT1767000006\",\"mac\":\"00:20:18:00:00:01\"},\n" +
-                "{\"model_number\":\"MT1767\",\"swid\":\"1.0.0.1\",\"hwid\":\"MT1767V12\",\"sn\":\"MT1767000007\",\"mac\":\"00:20:18:00:00:01\"},\n" +
-                "{\"model_number\":\"MT1767\",\"swid\":\"1.0.0.1\",\"hwid\":\"MT1767V12\",\"sn\":\"MT1767000008\",\"mac\":\"00:20:18:00:00:01\"},\n" +
-                "{\"model_number\":\"MT1767\",\"swid\":\"1.0.0.1\",\"hwid\":\"MT1767V12\",\"sn\":\"MT1767000009\",\"mac\":\"00:20:18:00:00:01\"},\n" +
-                "{\"model_number\":\"MT1767\",\"swid\":\"1.0.0.1\",\"hwid\":\"MT1767V12\",\"sn\":\"MT1767000010\",\"mac\":\"00:20:18:00:00:01\"},\n" +
-                "{\"model_number\":\"MT1767\",\"swid\":\"1.0.0.1\",\"hwid\":\"MT1767V12\",\"sn\":\"MT1767000011\",\"mac\":\"00:20:18:00:00:01\"},\n" +
-                "{\"model_number\":\"MT1767\",\"swid\":\"1.0.0.1\",\"hwid\":\"MT1767V12\",\"sn\":\"MT1767000012\",\"mac\":\"00:20:18:00:00:01\"},\n" +
-                "{\"model_number\":\"MT1767\",\"swid\":\"1.0.0.1\",\"hwid\":\"MT1767V12\",\"sn\":\"MT1767000013\",\"mac\":\"00:20:18:00:00:01\"}\n" +
+                "{\"model_number\":\"MT1767\",\"swid\":\"1.0.0.1\",\"hwid\":\"MT1767V12\",\"sn\":\"MT1767000004\",\"mac\":\"00:20:18:00:00:01\"}\n" +
                 "]}";
         GetSystemInfoJson getSystemInfoJson = new GsonBuilder().create().fromJson(jsontest, GetSystemInfoJson.class);
         List<GetSystemInfoJson> getSystemInfoJsonList = getSystemInfoJson.getTicketTask();
@@ -173,6 +164,9 @@ public class OTRSLockActivity extends AppCompatActivity implements Consts {
             case android.R.id.home:
                 finish();
                 return true;
+
+            default:
+                break;
         }
         return super.onOptionsItemSelected(item);
 

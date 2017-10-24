@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -163,7 +164,7 @@ public class TianXieZhuBanXinXiActivity extends AppCompatActivity implements Con
         ButterKnife.bind(this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitleTextColor(getResources().getColor(R.color.md_yellow_500));
+        toolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.md_yellow_500));
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -352,6 +353,9 @@ public class TianXieZhuBanXinXiActivity extends AppCompatActivity implements Con
                 //执行导入数据
                 saveData();
                 return true;
+
+            default:
+                break;
         }
         return super.onOptionsItemSelected(item);
 

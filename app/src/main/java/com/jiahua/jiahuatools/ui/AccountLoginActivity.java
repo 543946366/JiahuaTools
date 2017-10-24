@@ -4,21 +4,27 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.dd.CircularProgressButton;
 import com.jiahua.jiahuatools.MainActivity;
 import com.jiahua.jiahuatools.R;
 import com.jiahua.jiahuatools.bean.UserAndPassword;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.Call;
 
+/**
+ * @author Administrator
+ */
 public class AccountLoginActivity extends AppCompatActivity {
 
     @BindView(R.id.et_accountLogin_username)
@@ -32,7 +38,6 @@ public class AccountLoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //占满整个界面，让SplashActivity真正占满全屏幕
-        //getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_account_login);
         ButterKnife.bind(this);
 
@@ -71,18 +76,34 @@ public class AccountLoginActivity extends AppCompatActivity {
         btnAccountLoginDengLu.setClickable(false);
         String user = etAccountLoginUsername.getText().toString();
         String password = etAccountLoginPassword.getText().toString();
-        UserAndPassword userAndPassword = new UserAndPassword();
-        userAndPassword.setUser(user);
-        userAndPassword.setPassword(password);
-        userAndPassword.saveOrUpdate("id=?","1");
-        //userAndPassword.saveOrUpdateAsync("id=1");
 
+        String url = "https://imotom01.dd.ezbox.cc:34443/otrs/nph-genericinterface.pl/Webservice/testWeb/Ticket?UserLogin=" + user + "&Password=" + password;
+        OkHttpUtils.get().url(url).build().execute(new StringCallback() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                Toast.makeText(AccountLoginActivity.this, "登录失败，请重试！", Toast.LENGTH_SHORT).show();
+                btnAccountLoginDengLu.setProgress(0);
+                btnAccountLoginDengLu.setClickable(true);
+            }
 
-        new Handler().postDelayed(() -> {
-            btnAccountLoginDengLu.setProgress(100);
-            startActivity(new Intent(AccountLoginActivity.this, MainActivity.class));
-            finish();
-        },1000);
-        //new Handler().postDelayed(() -> {btnAccountLoginDengLu.setProgress(-1);btnAccountLoginDengLu.setClickable(true);},6000);
+            @Override
+            public void onResponse(String response, int id) {
+                if (response.contains("TicketSearch.AuthFail")) {
+                    btnAccountLoginDengLu.setProgress(0);
+                    btnAccountLoginDengLu.setClickable(true);
+                    Toast.makeText(AccountLoginActivity.this, "登录失败，账号或者密码错误！", Toast.LENGTH_SHORT).show();
+                } else {
+                    UserAndPassword userAndPassword = new UserAndPassword();
+                    userAndPassword.setUser(user);
+                    userAndPassword.setPassword(password);
+                    userAndPassword.saveOrUpdate("id=?", "1");
+
+                    btnAccountLoginDengLu.setProgress(100);
+                    startActivity(new Intent(AccountLoginActivity.this, MainActivity.class));
+                    finish();
+                }
+
+            }
+        });
     }
 }

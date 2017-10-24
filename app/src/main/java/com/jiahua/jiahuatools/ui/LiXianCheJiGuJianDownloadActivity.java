@@ -153,6 +153,9 @@ public class LiXianCheJiGuJianDownloadActivity extends AppCompatActivity impleme
                 guJianName = "boot.img";
                 btn_xiaZai.setVisibility(View.VISIBLE);
                 return true;
+
+            default:
+                break;
         }
         return super.onOptionsItemSelected(item);
 

@@ -24,9 +24,9 @@ import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.Comparator;
 
-public class UPnPDeviceComparator implements Comparator<UPnPDevice> {
+public class UPnPDeviceComparator implements Comparator<UpnpDevice> {
 	@Override
-	public int compare(UPnPDevice lhs, UPnPDevice rhs) {
+	public int compare(UpnpDevice lhs, UpnpDevice rhs) {
 		// Handle null objects
 		int compare = compareNull(lhs, rhs);
 		if (compare == 0 && lhs == null) {
@@ -105,19 +105,25 @@ public class UPnPDeviceComparator implements Comparator<UPnPDevice> {
 		byte[] ba2 = adr2.getAddress();
 
 		// general ordering: ipv4 before ipv6
-		if(ba1.length < ba2.length) return -1;
-		if(ba1.length > ba2.length) return 1;
+		if(ba1.length < ba2.length) {
+			return -1;
+		}
+		if(ba1.length > ba2.length) {
+			return 1;
+		}
 
 		// we have 2 ips of the same type, so we have to compare each byte
 		for(int i = 0; i < ba1.length; i++) {
 			int b1 = unsignedByteToInt(ba1[i]);
 			int b2 = unsignedByteToInt(ba2[i]);
-			if(b1 == b2)
+			if(b1 == b2) {
 				continue;
-			if(b1 < b2)
+			}
+			if(b1 < b2) {
 				return -1;
-			else
+			} else {
 				return 1;
+			}
 		}
 		return 0;
 	}

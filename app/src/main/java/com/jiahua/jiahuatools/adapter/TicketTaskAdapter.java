@@ -29,7 +29,6 @@ public class TicketTaskAdapter extends BaseQuickAdapter<TicketTask,BaseViewHolde
         if(item.isAccomplish()){
             helper.setImageResource(R.id.iv_item_ticket_task,android.R.drawable.checkbox_on_background)
                     .setBackgroundColor(R.id.ll_item_ticket_task, Color.GREEN);
-
         }else{
             helper.setImageResource(R.id.iv_item_ticket_task,android.R.drawable.checkbox_off_background)
             .setBackgroundColor(R.id.ll_item_ticket_task, Color.GRAY);

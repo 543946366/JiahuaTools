@@ -76,12 +76,17 @@ public class TicketWebActivity extends AppCompatActivity {
 
         webSettings = webView.getSettings();
         //webSettings.setJavaScriptEnabled(true);
-        webSettings.setUseWideViewPort(true);//适配屏幕
+        //适配屏幕
+        webSettings.setUseWideViewPort(true);
         webSettings.setLoadWithOverviewMode(true);
-        webSettings.setBuiltInZoomControls(true);//支持放大缩小
-        webSettings.setDefaultTextEncodingName("utf-8");//设置网页默认编码
-        webSettings.setDisplayZoomControls(false);//隐藏放大缩小的按钮
-        webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);//不使用缓存，只从网络获取数据。
+        //支持放大缩小
+        webSettings.setBuiltInZoomControls(true);
+        //设置网页默认编码
+        webSettings.setDefaultTextEncodingName("utf-8");
+        //隐藏放大缩小的按钮
+        webSettings.setDisplayZoomControls(false);
+        //不使用缓存，只从网络获取数据。
+        webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
         //webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);//支持内容重新布局
         //webSettings.setDomStorageEnabled(true);//支持Html5标签
         //webView.loadUrl("https://imotom01.dd.ezbox.cc:34443/otrs/index.pl");
@@ -124,6 +129,9 @@ public class TicketWebActivity extends AppCompatActivity {
             case android.R.id.home:
                 finish();
                 return true;
+
+            default:
+                break;
         }
         return super.onOptionsItemSelected(item);
 

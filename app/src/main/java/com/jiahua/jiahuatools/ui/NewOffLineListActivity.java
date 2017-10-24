@@ -1,6 +1,7 @@
 package com.jiahua.jiahuatools.ui;
 
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -40,7 +41,7 @@ public class NewOffLineListActivity extends AppCompatActivity implements Consts{
         setContentView(R.layout.activity_new_off_line_list);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //toolbar.setTitle("");
-        toolbar.setTitleTextColor(getResources().getColor(R.color.md_yellow_500));
+        toolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.md_yellow_500));
         setSupportActionBar(toolbar);
 
         if (getSupportActionBar() != null) {
@@ -102,6 +103,9 @@ public class NewOffLineListActivity extends AppCompatActivity implements Consts{
             case android.R.id.home:
                 finish();
                 return true;
+
+            default:
+                break;
         }
         return super.onOptionsItemSelected(item);
 
@@ -129,7 +133,7 @@ public class NewOffLineListActivity extends AppCompatActivity implements Consts{
                             Log.d("TAG", "当前坂本为：" + str.split(":")[0].trim());
                             if (str.split(":")[0].trim().equals(dangQianBanBenName)) {
                                 Log.d("TAG", "下个升级的坂本为：" + str.split(":")[1]);
-                                if (str.split(":")[1].equals("new")) {
+                                if ("new".equals(str.split(":")[1])) {
                                     tvNewOffLineListDevNewVersionInfo.setText("当前已是最新版本，无需升级！");
                                 } else {
                                     tvNewOffLineListDevNewVersionInfo.setText("有新版本：" + str.split(":")[1] + "\n请尽快联系4S店或者厂家升级！");

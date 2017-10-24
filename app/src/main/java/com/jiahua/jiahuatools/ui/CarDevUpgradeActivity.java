@@ -42,7 +42,7 @@ import okhttp3.Request;
 
 public class CarDevUpgradeActivity extends AppCompatActivity implements Consts {
     @BindView(R.id.tv_car_dev_upgrade_log)
-    TextView tv_log;
+    TextView tvLog;
     //升级按钮
     @BindView(R.id.btn_car_dev_upgrade_shengJi)
     Button btn_shengJi;
@@ -53,20 +53,27 @@ public class CarDevUpgradeActivity extends AppCompatActivity implements Consts {
     @BindView(R.id.pb_car_dev_upgrade_chuanSong)
     ProgressBar mProgressBar;
 
-    //设置当前是否在下载状态
+    /**
+     * 设置当前是否在下载状态
+     */
     private boolean isDownload;
 
     private String myBaseUrl;
-    //设备序列号
+    /**
+     * 设备序列号
+     */
     private String displaySerialNumber;
     private String displayFriendlyName;
     private String displayModelNumber;
     private String upgradeText;
-    //handler的类型（传送或者下载）
+    /**
+     * handler的类型（传送或者下载）
+     */
     private int TYPE;
-    //固件版本号
+    /**
+     * 固件版本号
+     */
     private String guJianName = "rtthread.tar.gz";
-    //private int hint = 0;
     private String upload = "upload_stm32";
 
     private Handler handler = new Handler();
@@ -88,9 +95,9 @@ public class CarDevUpgradeActivity extends AppCompatActivity implements Consts {
             //setTitle("loading...");
             L.e("nihao "+request.toString());
             if (TYPE == CHUANG_SONG) {
-                tv_log.setText("传送固件中，请勿进行其他操作！");
+                tvLog.setText("传送固件中，请勿进行其他操作！");
             } else if (TYPE == XIA_ZAI) {
-                tv_log.setText("下载固件中，请勿进行其他操作！");
+                tvLog.setText("下载固件中，请勿进行其他操作！");
             }
 
         }
@@ -105,7 +112,7 @@ public class CarDevUpgradeActivity extends AppCompatActivity implements Consts {
             L.e("error"+e.getMessage());
             mProgressBar.setVisibility(View.INVISIBLE);
 
-            tv_log.setText(String.valueOf("失败！失败信息:" + e.getMessage()));
+            tvLog.setText(String.valueOf("失败！失败信息:" + e.getMessage()));
             btn_shengJi.setVisibility(View.VISIBLE);
             btn_shengJi.setClickable(true);
         }
@@ -115,11 +122,11 @@ public class CarDevUpgradeActivity extends AppCompatActivity implements Consts {
             L.e("response"+ response);
             mProgressBar.setVisibility(View.INVISIBLE);
             if (TYPE == CHUANG_SONG) {
-                tv_log.setText("传送固件成功！");
+                tvLog.setText("传送固件成功！");
                 showMyDialog();
                 //chongQi();
             } else if (TYPE == XIA_ZAI) {
-                tv_log.setText("下载固件:" + guJianName + "成功！正在传送固件");
+                tvLog.setText("下载固件:" + guJianName + "成功！正在传送固件");
 
             }
         }
@@ -152,7 +159,6 @@ public class CarDevUpgradeActivity extends AppCompatActivity implements Consts {
             switch (msg.what) {
                 case OK_TEXT:
                     // 在这里可以进行UI操作
-                    // new DownloadTask().execute();
                     try {
                         activity.getSystemInfoJson = new GsonBuilder().create().fromJson(String.valueOf(msg.obj.toString().substring(4)), GetSystemInfoJson.class);
                         if (!activity.getSystemInfoJson.getSwid().isEmpty()) {
@@ -162,7 +168,7 @@ public class CarDevUpgradeActivity extends AppCompatActivity implements Consts {
                             activity.Stm32_ver = activity.getSystemInfoJson.getStm32_ver();
                         }
 
-                        activity.tv_log.setText(String.valueOf("单片机当前版本为:" + activity.Stm32_ver));
+                        activity.tvLog.setText(String.valueOf("单片机当前版本为:" + activity.Stm32_ver));
 
                         DeviceOffLine deviceOffLine = new DeviceOffLine();
                         deviceOffLine.setDevice_friendly_name(activity.displayFriendlyName);
@@ -173,7 +179,6 @@ public class CarDevUpgradeActivity extends AppCompatActivity implements Consts {
                         deviceOffLine.saveOrUpdate(DEVICE_MODEL_NUMBER_ADD_SERIAL_NUMBER+"=?",deviceOffLine.getDevice_model_number_add_serial_number());
 
                     } catch (Exception e) {
-                        //e.printStackTrace();
                     }
                     break;
 
@@ -229,14 +234,14 @@ public class CarDevUpgradeActivity extends AppCompatActivity implements Consts {
                                         @Override
                                         public void onError(Call call, Exception e, int id) {
                                             L.e(e.getMessage());
-                                            tv_log.setText(String.valueOf("升级失败!失败信息："+e.toString()));
+                                            tvLog.setText(String.valueOf("升级失败!失败信息："+e.toString()));
                                             btn_shengJi.setVisibility(View.VISIBLE);
                                         }
 
                                         @Override
                                         public void onResponse(String response, int id) {
                                             L.e(response);
-                                            tv_log.setText("固件升级中...\n");
+                                            tvLog.setText("固件升级中...\n");
                                             startHandleLoop();
 
                                         }
@@ -255,25 +260,24 @@ public class CarDevUpgradeActivity extends AppCompatActivity implements Consts {
      */
     private void shuaXin() {
         String url = myBaseUrl + "upgrade";
-        OkHttpUtils//
-                .get()//
-                .url(url)//
-                .build()//
+        OkHttpUtils
+                .get()
+                .url(url)
+                .build()
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
                         stopHandleLoop();
-                        tv_log.setText("升级失败！\n" + "失败信息：\n" + e.getMessage());
+                        tvLog.setText("升级失败！\n" + "失败信息：\n" + e.getMessage());
                         btn_shengJi.setVisibility(View.VISIBLE);
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
-                        //tv_log.setText(response);
                         L.e(response);
                         if (response.contains("固件导入成功")) {
                             stopHandleLoop();
-                            tv_log.setText("固件导入成功！需立即重启以使用新系统！");
+                            tvLog.setText("固件导入成功！需立即重启以使用新系统！");
                             chongQi();
                         }
 
@@ -288,20 +292,20 @@ public class CarDevUpgradeActivity extends AppCompatActivity implements Consts {
                 .content("固件升级成功！需要立即重启!请点击重启车机设备！")
                 .positiveText("重启")
                 .onPositive((dialog,which) ->
-                        OkHttpUtils//
-                                .post()//
-                                .url(url)//
-                                .build()//
+                        OkHttpUtils
+                                .post()
+                                .url(url)
+                                .build()
                                 .execute(new StringCallback() {
                                     @Override
                                     public void onError(Call call, Exception e, int id) {
-                                        tv_log.setText("重启失败！\n" + "失败信息：" + e.getMessage());
+                                        tvLog.setText("重启失败！\n" + "失败信息：" + e.getMessage());
                                         btn_shengJi.setVisibility(View.VISIBLE);
                                     }
 
                                     @Override
                                     public void onResponse(String response, int id) {
-                                        tv_log.setText(String.valueOf("重启设备成功！\n" + response));
+                                        tvLog.setText(String.valueOf("重启设备成功！\n" + response));
                                     }
 
                                 })
@@ -338,7 +342,7 @@ public class CarDevUpgradeActivity extends AppCompatActivity implements Consts {
         //获取上一个界面传来的URL
         Intent intent = getIntent();
         myBaseUrl = intent.getStringExtra(INTENT_deviceURL);
-        tv_log.setText("单片机升级");
+        tvLog.setText("单片机升级");
 
         btn_shengJi.setOnClickListener((v) -> {
             if (isDownload) {
@@ -408,8 +412,7 @@ public class CarDevUpgradeActivity extends AppCompatActivity implements Consts {
         File file = new File(Environment.getExternalStorageDirectory(), guJianName);
         //判断是否已下载固件
         if (!file.exists()) {
-            tv_log.setText("还没下载最新固件，请下载固件后再进行升级！" + "\n" + "升级文件较大，建议在WIFI环境下再下载！");
-            //btn_xiaZai.setVisibility(View.VISIBLE);
+            tvLog.setText("还没下载最新固件，请下载固件后再进行升级！" + "\n" + "升级文件较大，建议在WIFI环境下再下载！");
         } else {
             L.e("+++++++++++");
             chuanSongGuJian(file);
@@ -437,7 +440,7 @@ public class CarDevUpgradeActivity extends AppCompatActivity implements Consts {
             case R.id.action_stm32:
                 Toast.makeText(this, "单片机升级", Toast.LENGTH_SHORT).show();
                 // = 0;
-                tv_log.setText(String.valueOf("单片机当前版本为:" + Stm32_ver));
+                tvLog.setText(String.valueOf("单片机当前版本为:" + Stm32_ver));
                 guJianName = "rtthread.tar.gz";
                 upload = "upload_stm32";
                 btn_shengJi.setVisibility(View.VISIBLE);
@@ -447,7 +450,7 @@ public class CarDevUpgradeActivity extends AppCompatActivity implements Consts {
             case R.id.action_t3_system:
                 Toast.makeText(this, "系统文件升级", Toast.LENGTH_SHORT).show();
                 //hint = 1;
-                tv_log.setText(String.valueOf("系统文件当前版本为:" + swid));
+                tvLog.setText(String.valueOf("系统文件当前版本为:" + swid));
                 guJianName = "system.tar.gz";
                 upload = "upload_t3_system";
                 btn_shengJi.setVisibility(View.VISIBLE);
@@ -457,12 +460,15 @@ public class CarDevUpgradeActivity extends AppCompatActivity implements Consts {
             case R.id.action_t3_boot:
                 Toast.makeText(this, "内核升级", Toast.LENGTH_SHORT).show();
                 //hint = 2;
-                tv_log.setText("内核升级升级");
+                tvLog.setText("内核升级升级");
                 guJianName = "boot.img";
                 upload = "upload_t3_boot";
                 btn_shengJi.setVisibility(View.VISIBLE);
                 btn_xiaZai.setVisibility(View.VISIBLE);
                 return true;
+
+            default:
+                break;
         }
         return super.onOptionsItemSelected(item);
 
@@ -473,14 +479,13 @@ public class CarDevUpgradeActivity extends AppCompatActivity implements Consts {
      */
     private void chuanSongGuJian(File file) {
         //getAuthorizationHaderValue(file);
-        //btn_shengJi.setClickable(false);
         TYPE = CHUANG_SONG;
 
         String url = myBaseUrl + upload;
-        OkHttpUtils.post()//
-                .addFile("firmware", guJianName, file)//
-                .url(url)//
-                .build()//
+        OkHttpUtils.post()
+                .addFile("firmware", guJianName, file)
+                .url(url)
+                .build()
                 .execute(new MyStringCallback());
     }
 
@@ -525,7 +530,8 @@ public class CarDevUpgradeActivity extends AppCompatActivity implements Consts {
     }*/
 
     /**
-     * Service广播的接收者
+     *广播的接收者
+     *
      */
     private class InnerReceiver extends BroadcastReceiver {
 
@@ -552,7 +558,7 @@ public class CarDevUpgradeActivity extends AppCompatActivity implements Consts {
                 stopService(intentStop);*/
                 btn_xiaZai.setText("开始下载");
 
-                tv_log.setText("固件:" + guJianName + "下载成功！可以开始升级车机固件！");
+                tvLog.setText("固件:" + guJianName + "下载成功！可以开始升级车机固件！");
                 mProgressBar.setVisibility(View.INVISIBLE);
                 btn_xiaZai.setVisibility(View.INVISIBLE);
 
@@ -561,7 +567,7 @@ public class CarDevUpgradeActivity extends AppCompatActivity implements Consts {
             } else if (ACTION_SET_DOWNLOAD_STATE.equals(action)) {
                 btn_xiaZai.setVisibility(View.VISIBLE);
                 mProgressBar.setVisibility(View.VISIBLE);
-                tv_log.setText("下载固件中");
+                tvLog.setText("下载固件中");
                 btn_xiaZai.setText("取消下载");
 
                 isDownload = true;
@@ -576,14 +582,14 @@ public class CarDevUpgradeActivity extends AppCompatActivity implements Consts {
                 //接收 固件下载失败的广播 后的逻辑
             } else if (ACTION_DOWNLOAD_ERROR.equals(action)) {
                 String error_text = intent.getStringExtra(EXTRA_DOWNLOAD_ERROR_TEXT);
-                tv_log.setText(String.valueOf("固件下载失败！请重试！\n失败信息:" + error_text));
+                tvLog.setText(String.valueOf("固件下载失败！请重试！\n失败信息:" + error_text));
 
                 isDownload = false;
             }
         }
     }
 
-    /*
+    /**
      * 开始循环
      */
     private void startHandleLoop() {

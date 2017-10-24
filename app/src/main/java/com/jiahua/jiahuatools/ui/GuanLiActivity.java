@@ -205,6 +205,9 @@ public class GuanLiActivity extends AppCompatActivity implements View.OnClickLis
                 //String reg = ".*\\/\\/([^\\/\\:]*).*";
                 FileUtils.writeTxtToFile(myBaseUrl.replaceAll(REG, "$1"), Environment.getExternalStorageDirectory().getPath() + "/imotom/", "DeviceOffLine.txt");
                 break;
+
+            default:
+                break;
         }
     }
 

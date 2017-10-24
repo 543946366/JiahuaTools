@@ -142,6 +142,9 @@ public class NewGuanLiActivity extends AppCompatActivity implements Consts {
                 intent.putExtra(INTENT_display_model_number, displayModelNumber);
                 startActivity(intent);
                 break;
+
+            default:
+                break;
         }
     }
 
@@ -161,6 +164,9 @@ public class NewGuanLiActivity extends AppCompatActivity implements Consts {
             case android.R.id.home:
                 finish();
                 return true;
+
+            default:
+                break;
         }
         return super.onOptionsItemSelected(item);
 

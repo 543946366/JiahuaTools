@@ -136,7 +136,8 @@ public class PasswordHelp {
         try {
             // 生成key
             KeyGenerator keyGenerator = KeyGenerator.getInstance("DESede");
-            keyGenerator.init(168);// can 168 or 112/new SecureRandom()
+            // can 168 or 112/new SecureRandom()
+            keyGenerator.init(168);
             SecretKey secretKey = keyGenerator.generateKey();
             byte[] bytesKey = secretKey.getEncoded();
 

@@ -42,7 +42,10 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 
-public class UPnPDevice {
+/**
+ * @author Administrator
+ */
+public class UpnpDevice {
 
 	private String mRawUPnP;
 	private String mRawXml;
@@ -52,7 +55,7 @@ public class UPnPDevice {
 	private HashMap<String, String> mProperties;
 	private String mCachedIconUrl;
 
-	private UPnPDevice() {
+	private UpnpDevice() {
 	}
 
 	private String getHost() {
@@ -143,10 +146,10 @@ public class UPnPDevice {
 	// UPnP Response Parsing
 	////////////////////////////////////////////////////////////////////////////////
 
-	static UPnPDevice getInstance(String raw) {
+	static UpnpDevice getInstance(String raw) {
 		HashMap<String, String> parsed = parseRaw(raw);
 		try {
-			UPnPDevice device = new UPnPDevice();
+			UpnpDevice device = new UpnpDevice();
 			device.mRawUPnP = raw;
 			device.mProperties = parsed;
 			device.mLocation = new URL(parsed.get("upnp_location"));
@@ -160,7 +163,7 @@ public class UPnPDevice {
 	}
 
 	private static HashMap<String, String> parseRaw(String raw) {
-		HashMap<String, String> results = new HashMap<>();
+		HashMap<String, String> results = new HashMap<>(16);
 		for (String line : raw.split("\r\n")) {
 			int colon = line.indexOf(":");
 			if (colon != -1) {
@@ -213,7 +216,10 @@ public class UPnPDevice {
 
 	}
 
-	//获取设备信息
+	/**
+	 *
+	 * @return 获取设备信息
+	 */
 	String getMyDetailsMsg() {
 		StringBuilder sb = new StringBuilder();
 			sb.append("设备名: ").append(getDisplayString()).append("\n");
@@ -221,8 +227,8 @@ public class UPnPDevice {
 			sb.append("序列号: ").append(mProperties.get("xml_serial_number")).append("\n");
 			//正则表达式获取IP
 			String reg = Consts.REG;
-			String IP = mProperties.get("xml_presentation_URL");
-			sb.append("IP地址: ").append(IP.replaceAll(reg, "$1"));
+			String ip = mProperties.get("xml_presentation_URL");
+			sb.append("IP地址: ").append(ip.replaceAll(reg, "$1"));
 		return sb.toString();
 	}
 }

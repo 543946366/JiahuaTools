@@ -55,12 +55,12 @@ import static com.jiahua.jiahuatools.consts.Consts.CHONG_QI_TEXT;
 public class UPnPDeviceAdapter extends RecyclerView.Adapter<UPnPDeviceAdapter.ViewHolder> {
 
     /*public interface ItemClickListener {
-        void onClick(UPnPDevice item, int position);
+        void onClick(UpnpDevice item, int position);
     }*/
 
-    private Comparator<UPnPDevice> mComparator = new UPnPDeviceComparator();
+    private Comparator<UpnpDevice> mComparator = new UPnPDeviceComparator();
 
-    private ArrayList<UPnPDevice> mItems;
+    private ArrayList<UpnpDevice> mItems;
     //private ItemClickListener mListener;
 
     private String myURL;
@@ -90,7 +90,7 @@ public class UPnPDeviceAdapter extends RecyclerView.Adapter<UPnPDeviceAdapter.Vi
         return mItems.size();
     }
 
-    private UPnPDevice getItem(int position) {
+    private UpnpDevice getItem(int position) {
         return mItems.get(position);
     }
 
@@ -100,7 +100,7 @@ public class UPnPDeviceAdapter extends RecyclerView.Adapter<UPnPDeviceAdapter.Vi
         notifyItemRangeRemoved(0, count);
     }
 
-    public void add(UPnPDevice item) {
+    public void add(UpnpDevice item) {
         int index = Collections.binarySearch(mItems, item, mComparator);
         if (index < 0) {
             int position = -index - 1;
@@ -131,7 +131,7 @@ public class UPnPDeviceAdapter extends RecyclerView.Adapter<UPnPDeviceAdapter.Vi
 
             viewHolder.tv_item_upnp_device_guanLi.setOnClickListener(v -> {
                 int position = viewHolder.getAdapterPosition();
-                UPnPDevice upnpDev = mItems.get(position);
+                UpnpDevice upnpDev = mItems.get(position);
 
                 myURL = upnpDev.getPresentationURL();
                 //myURL = "http://192.168.63.9:8099";
@@ -149,7 +149,7 @@ public class UPnPDeviceAdapter extends RecyclerView.Adapter<UPnPDeviceAdapter.Vi
      *
      *
      */
-    /*private void showDeviceXinxiDialog(UPnPDevice deviceDisplay) {
+    /*private void showDeviceXinxiDialog(UpnpDevice deviceDisplay) {
         final AlertDialog dialog = new AlertDialog.Builder(myContext).create();
         dialog.setTitle("设备信息");
         dialog.setMessage(deviceDisplay.getMyDetailsMsg());
@@ -163,7 +163,7 @@ public class UPnPDeviceAdapter extends RecyclerView.Adapter<UPnPDeviceAdapter.Vi
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        UPnPDevice item = getItem(position);
+        UpnpDevice item = getItem(position);
         if (holder.friendlyName != null && holder.icon != null) {
             String devName = item.getDevName();
             if (TextUtils.isEmpty(devName)) {
@@ -171,7 +171,7 @@ public class UPnPDeviceAdapter extends RecyclerView.Adapter<UPnPDeviceAdapter.Vi
             }
             holder.friendlyName.setText(devName);
             //新的根据型号区分设备种类
-            if (item.getModelNumber() == null || item.getModelNumber().equals("")) {
+            if (item.getModelNumber() == null || "".equals(item.getModelNumber())) {
                 holder.icon.setImageResource(R.mipmap.cheji_icon);
             } else {
                 if (item.getModelNumber().equals(Consts.MT_guoKe_model_number)) {
@@ -268,8 +268,8 @@ public class UPnPDeviceAdapter extends RecyclerView.Adapter<UPnPDeviceAdapter.Vi
         myPassword = PasswordHelp.readPassword(myContext)[1];
 
         //如果之前是非记住密码保存，则跳转到登录界面
-        if (myUerName.equals("nullCaoNiMa") ||
-                myPassword.equals("null")) {
+        if ("nullCaoNiMa".equals(myUerName) ||
+                "null".equals(myPassword)) {
             Intent meiJiLuTiaoZhuan = new Intent(myContext, DengLuActivity.class);
             meiJiLuTiaoZhuan.putExtra(Consts.INTENT_deviceURL, myURL);
             //获取设备名

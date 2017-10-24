@@ -43,7 +43,6 @@
         app:layout_constraintHorizontal_bias="0.505"
         android:scrollHorizontally="true"
         android:paddingLeft="5dp"
-        android:text="gzjh100001@jiahua.win"
         />
 
     <EditText
@@ -63,7 +62,6 @@
         app:layout_constraintHorizontal_bias="0.505"
         android:scrollHorizontally="true"
         android:paddingLeft="5dp"
-        android:text="gzjh100001"
         />
 
     <com.dd.CircularProgressButton

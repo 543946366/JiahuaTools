@@ -83,7 +83,8 @@ public class NewDownloadAppService extends Service implements Consts {
                     baseDownloadTask.start();
 
                 }
-            }else if(ACTION_IS_DOWNLOAD.equals(action)){ //回应activity询问当前是否在下载状态的请求
+            //回应activity询问当前是否在下载状态的请求
+            }else if(ACTION_IS_DOWNLOAD.equals(action)){
                 if (isDownload){
                     sendBroadcast(new Intent().setAction(ACTION_SET_DOWNLOAD_STATE));
                 }else {
@@ -189,8 +190,9 @@ public class NewDownloadAppService extends Service implements Consts {
         BigDecimal megabyte = new BigDecimal(1024 * 1024);
         float returnValue = filesize.divide(megabyte, 2, BigDecimal.ROUND_UP)
                 .floatValue();
-        if (returnValue > 1)
+        if (returnValue > 1) {
             return (returnValue + "MB");
+        }
         BigDecimal kilobyte = new BigDecimal(1024);
         returnValue = filesize.divide(kilobyte, 2, BigDecimal.ROUND_UP)
                 .floatValue();

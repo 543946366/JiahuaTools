@@ -54,7 +54,7 @@ public class OffLineCheckDevVersionActivity extends AppCompatActivity {
             switch (msg.what) {
                 //下个版本信息
                 case NEXT_BANBENHAO_TEXT:
-                    if (String.valueOf(msg.obj).equals("当前已是最新版本，无需升级！")) {
+                    if ("当前已是最新版本，无需升级！".equals(String.valueOf(msg.obj))) {
                         activity.tv_log.setText("当前"+activity.dangQianBanBen+"已是最新版本，无需升级！");
 
                     } else {
@@ -166,7 +166,7 @@ public class OffLineCheckDevVersionActivity extends AppCompatActivity {
                             Log.d("TAG", "当前坂本为：" + str.split(":")[0].trim());
                             if (str.split(":")[0].trim().equals(dangQianBanBen)) {
                                 Log.d("TAG", "下个升级的坂本为：" + str.split(":")[1]);
-                                if (str.split(":")[1].equals("new")) {
+                                if ("new".equals(str.split(":")[1])) {
                                     newBanBen = "当前已是最新版本，无需升级！";
                                 } else {
                                     newBanBen = str.split(":")[1] + ".bin";
@@ -174,7 +174,8 @@ public class OffLineCheckDevVersionActivity extends AppCompatActivity {
                                 Message message = new Message();
                                 message.what = NEXT_BANBENHAO_TEXT;
                                 message.obj = newBanBen;
-                                logTextHandler.sendMessage(message); // 将Message对象发送出去
+                                // 将Message对象发送出去
+                                logTextHandler.sendMessage(message);
                                 return;
                             } else {
                                 //当网络上无此版本号时，提示无需升级
@@ -182,7 +183,8 @@ public class OffLineCheckDevVersionActivity extends AppCompatActivity {
                                 Message message = new Message();
                                 message.what = NEXT_BANBENHAO_TEXT;
                                 message.obj = newBanBen;
-                                logTextHandler.sendMessage(message); // 将Message对象发送出去
+                                // 将Message对象发送出去
+                                logTextHandler.sendMessage(message);
                             }
                         }
 
@@ -196,6 +198,9 @@ public class OffLineCheckDevVersionActivity extends AppCompatActivity {
             case android.R.id.home:
                 finish();
                 return true;
+
+            default:
+                break;
         }
         return super.onOptionsItemSelected(item);
 

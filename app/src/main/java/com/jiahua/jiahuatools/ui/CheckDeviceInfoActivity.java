@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -61,7 +62,6 @@ public class CheckDeviceInfoActivity extends AppCompatActivity implements Consts
             switch (msg.what) {
                 case OK_TEXT:
                     // 在这里可以进行UI操作
-                    // new DownloadTask().execute();
                     try {
 
                         int jsonSize = msg.obj.toString().indexOf("{");
@@ -90,7 +90,6 @@ public class CheckDeviceInfoActivity extends AppCompatActivity implements Consts
                         }
 
                     } catch (Exception e) {
-                        //e.printStackTrace();
                     }
 
                     DeviceOffLine deviceOffLine = new DeviceOffLine();
@@ -119,7 +118,7 @@ public class CheckDeviceInfoActivity extends AppCompatActivity implements Consts
         ButterKnife.bind(this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitleTextColor(getResources().getColor(R.color.md_yellow_500));
+        toolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.md_yellow_500));
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -148,6 +147,9 @@ public class CheckDeviceInfoActivity extends AppCompatActivity implements Consts
             case android.R.id.home:
                 finish();
                 return true;
+
+            default:
+                break;
         }
         return super.onOptionsItemSelected(item);
 
