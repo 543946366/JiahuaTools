@@ -91,6 +91,8 @@ public interface Consts {
     String INTENT_download_app_introduction = "intent_download_app_introduction";
     //下载的app包名
     String INTENT_download_app_package = "intent_download_app_package";
+    //
+    String INTENT_OTRSTTA_to_MA = "intent_otrstta_to_ma";
 
     /**
      * 设备制造商  根据制造商是否显示在线设备
@@ -150,12 +152,5 @@ public interface Consts {
      * ---------------------------------------------------------------------------------------
      */
     String NAVIGATION_APP_NAME= "navigation.apk";
-
-    /**
-     * getIntent().getFlags()
-     * ---------------------------------------------------------------------------------------
-     */
-    //OTRSTicketTaskActivity -> MainActivity
-    int OTRSTTA_to_MA = 104;
 
 }

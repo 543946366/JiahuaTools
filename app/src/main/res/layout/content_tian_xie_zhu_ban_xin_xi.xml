@@ -75,7 +75,7 @@
             />
     </LinearLayout>
 
-    <TextView
+    <!--<TextView
         android:id="@+id/textView6"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -101,7 +101,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             />
-    </LinearLayout>
+    </LinearLayout>-->
 
     <TextView
         android:id="@+id/textView8"
@@ -195,18 +195,23 @@
         </LinearLayout>
     </ScrollView>
 
-    <com.dd.CircularProgressButton
-        android:id="@+id/btn_TXZBXX_tiJiao"
+    <android.support.v7.widget.CardView
+        android:id="@+id/cv_TXZBXX_tiJiao"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
-        android:textColor="@color/mFontWhite"
-        android:textSize="24sp"
-        app:cpb_selectorIdle="@drawable/idle_state_selector"
-        app:cpb_colorIndicator="@color/colorAccent"
-        app:cpb_cornerRadius="6dp"
-        app:cpb_textComplete="修改成功"
-        app:cpb_textError="提交失败"
-        app:cpb_textIdle="提交修改"
-        />
+        app:cardCornerRadius="6dp"
+        app:cardBackgroundColor="@color/colorAccent"
+        android:foreground="?attr/selectableItemBackground"
+        >
+        <TextView
+            android:id="@+id/tv_tv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textColor="@color/colorPrimary"
+            android:textSize="24sp"
+            android:text="提交修改"
+            android:gravity="center"
+            />
+    </android.support.v7.widget.CardView>
 </LinearLayout>

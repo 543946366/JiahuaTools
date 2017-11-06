@@ -65,11 +65,11 @@
                     android:text="序列号"
                     android:textSize="20sp" />
 
-                <TextView
+                <!--<TextView
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:text="Mac地址"
-                    android:textSize="20sp" />
+                    android:textSize="20sp" />-->
             </LinearLayout>
 
             <android.support.v7.widget.RecyclerView
@@ -94,18 +94,23 @@
         android:background="@color/colorPrimaryDark"
         android:padding="10dp"
         android:id="@+id/linearLayout">
-        <com.dd.CircularProgressButton
-            android:id="@+id/cpb_otrsTicketTask_ok"
+        <android.support.v7.widget.CardView
+            android:id="@+id/cd_otrsTicketTask_tiJiao"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorPrimary"
-            android:textSize="24sp"
-            app:cpb_colorIndicator="@color/colorAccent"
-            app:cpb_cornerRadius="6dp"
-            app:cpb_selectorIdle="@drawable/idle_state_selector"
-            app:cpb_textComplete="提交成功"
-            app:cpb_textError="提交失败"
-            app:cpb_textIdle="提交任务"/>
-
+            app:cardCornerRadius="6dp"
+            app:cardBackgroundColor="@color/colorAccent"
+            android:foreground="?attr/selectableItemBackground"
+            >
+            <TextView
+                android:id="@+id/tv_tv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textColor="@color/colorPrimary"
+                android:textSize="24sp"
+                android:text="提交任务"
+                android:gravity="center"
+                />
+        </android.support.v7.widget.CardView>
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

@@ -27,6 +27,7 @@ import com.jiahua.jiahuatools.bean.GetSystemInfoJson;
 import com.jiahua.jiahuatools.consts.Consts;
 import com.jiahua.jiahuatools.service.DownloadFileService;
 import com.jiahua.jiahuatools.utils.DigestAuthenticationUtil;
+import com.orhanobut.logger.Logger;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 import com.zhy.http.okhttp.utils.L;
@@ -126,7 +127,7 @@ public class CarDevUpgradeActivity extends AppCompatActivity implements Consts {
                 showMyDialog();
                 //chongQi();
             } else if (TYPE == XIA_ZAI) {
-                tvLog.setText("下载固件:" + guJianName + "成功！正在传送固件");
+                tvLog.setText(String.valueOf("下载固件:" + guJianName + "成功！正在传送固件"));
 
             }
         }
@@ -179,6 +180,7 @@ public class CarDevUpgradeActivity extends AppCompatActivity implements Consts {
                         deviceOffLine.saveOrUpdate(DEVICE_MODEL_NUMBER_ADD_SERIAL_NUMBER+"=?",deviceOffLine.getDevice_model_number_add_serial_number());
 
                     } catch (Exception e) {
+                        Logger.d(e.getMessage());
                     }
                     break;
 
@@ -268,7 +270,7 @@ public class CarDevUpgradeActivity extends AppCompatActivity implements Consts {
                     @Override
                     public void onError(Call call, Exception e, int id) {
                         stopHandleLoop();
-                        tvLog.setText("升级失败！\n" + "失败信息：\n" + e.getMessage());
+                        tvLog.setText(String.valueOf("升级失败！\n" + "失败信息：\n" + e.getMessage()));
                         btn_shengJi.setVisibility(View.VISIBLE);
                     }
 
@@ -299,7 +301,7 @@ public class CarDevUpgradeActivity extends AppCompatActivity implements Consts {
                                 .execute(new StringCallback() {
                                     @Override
                                     public void onError(Call call, Exception e, int id) {
-                                        tvLog.setText("重启失败！\n" + "失败信息：" + e.getMessage());
+                                        tvLog.setText(String.valueOf("重启失败！\n" + "失败信息：" + e.getMessage()));
                                         btn_shengJi.setVisibility(View.VISIBLE);
                                     }
 
@@ -412,7 +414,7 @@ public class CarDevUpgradeActivity extends AppCompatActivity implements Consts {
         File file = new File(Environment.getExternalStorageDirectory(), guJianName);
         //判断是否已下载固件
         if (!file.exists()) {
-            tvLog.setText("还没下载最新固件，请下载固件后再进行升级！" + "\n" + "升级文件较大，建议在WIFI环境下再下载！");
+            tvLog.setText(String.valueOf("还没下载最新固件，请下载固件后再进行升级！" + "\n" + "升级文件较大，建议在WIFI环境下再下载！"));
         } else {
             L.e("+++++++++++");
             chuanSongGuJian(file);
@@ -557,7 +559,7 @@ public class CarDevUpgradeActivity extends AppCompatActivity implements Consts {
                 stopService(intentStop);*/
                 btn_xiaZai.setText("开始下载");
 
-                tvLog.setText("固件:" + guJianName + "下载成功！可以开始升级车机固件！");
+                tvLog.setText(String.valueOf("固件:" + guJianName + "下载成功！可以开始升级车机固件！"));
                 mProgressBar.setVisibility(View.INVISIBLE);
                 btn_xiaZai.setVisibility(View.INVISIBLE);
 

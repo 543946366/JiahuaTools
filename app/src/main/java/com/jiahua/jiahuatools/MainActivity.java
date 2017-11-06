@@ -2,6 +2,7 @@ package com.jiahua.jiahuatools;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -32,6 +33,7 @@ import com.jiahua.jiahuatools.bean.DeviceOffLine;
 import com.jiahua.jiahuatools.bean.UserAndPassword;
 import com.jiahua.jiahuatools.consts.Consts;
 import com.jiahua.jiahuatools.ui.NewOffLineListActivity;
+import com.jiahua.jiahuatools.ui.OTRSKeHuWebActivity;
 import com.jiahua.jiahuatools.ui.OTRSMainActivity;
 import com.jiahua.jiahuatools.upnp.UPnPDeviceAdapter;
 import com.jiahua.jiahuatools.upnp.UPnPDeviceFinder;
@@ -160,8 +162,6 @@ public class MainActivity extends AppCompatActivity
 
         //设置标题栏
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //toolbar.setTitle("");
-        //toolbar.setTitleTextColor(getResources().getColor(R.color.md_yellow_500));
         toolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.md_yellow_500));
         setSupportActionBar(toolbar);
 
@@ -181,8 +181,10 @@ public class MainActivity extends AppCompatActivity
         //设置侧边栏的选项点击
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        //获取侧边栏的头部View
         View view = navigationView.getHeaderView(0);
 
+        //获取侧边栏的头部文字控件，填写当前登录的用户名字
         TextView tv_nav_header_userName = (TextView) view.findViewById(R.id.tv_nav_header_main);
         UserAndPassword userAndPassword = DataSupport.findFirst(UserAndPassword.class);
         tv_nav_header_userName.setText(userAndPassword.getUser());
@@ -200,8 +202,13 @@ public class MainActivity extends AppCompatActivity
         vRecycler.setVisibility(View.INVISIBLE);
         vRecycler.setAdapter(mAdapter);
 
-        if (getIntent().getFlags() == OTRSTTA_to_MA) {
-            fab.setVisibility(View.GONE);
+        try{
+            //如果是从OTRS工单任务界面进入到主界面，则把悬浮按钮隐藏
+            if(getIntent().getStringExtra(INTENT_OTRSTTA_to_MA).equals(INTENT_OTRSTTA_to_MA)){
+                fab.setVisibility(View.GONE);
+            }
+        }catch (Exception e){
+            Logger.d(e.getMessage());
         }
         liXianDev();
     }
@@ -212,6 +219,7 @@ public class MainActivity extends AppCompatActivity
     private void liXianDev() {
         //新的业务逻辑为离线设备添加跳转
         //uPnPDeviceOffLineAdapter.clear();
+        //获取本地离线设备的数据
         deviceOffLineList = DataSupport.findAll(DeviceOffLine.class);
         uPnPDeviceOffLineAdapter = new UPnPDeviceOffLineAdapter(MainActivity.this, deviceOffLineList);
         offLineRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -240,6 +248,7 @@ public class MainActivity extends AppCompatActivity
                         .positiveText("删除")
                         .onPositive(
                                 (dialog, which) -> {
+                                    //删除离线设备，同时删除本地保存的离线设备
                                     DataSupport
                                             .deleteAll(DeviceOffLine.class, DEVICE_MODEL_NUMBER_ADD_SERIAL_NUMBER + "=?",
                                                     deviceOffLineList.get(position).getDevice_model_number_add_serial_number());
@@ -266,6 +275,9 @@ public class MainActivity extends AppCompatActivity
         searchUpnpDev();
     }
 
+    /**
+     * 扫描当前连接的在线设备
+     */
     private void searchUpnpDev() {
         new UPnPDeviceFinder().observe()
                 .filter(device -> {
@@ -300,7 +312,8 @@ public class MainActivity extends AppCompatActivity
 
                     try {
                         //搜索到的Upnp设备含有目拓或者是加华的制造商才显示在线
-                        if (getIntent().getFlags() == OTRSTTA_to_MA ?
+                        //如果是从OTRS工单任务界面进入，则根据工单任务传过来设备类型进行过滤
+                        if ((!getIntent().getStringExtra(INTENT_OTRSTTA_to_MA).isEmpty())?
                                 device.getModelNumber().equals(getIntent().getStringExtra(INTENT_display_model_number))
                                 : (device.getManufacturer().equals(Manufacturer_Imotom)
                                 || device.getManufacturer().equals(Manufacturer_Jiahua))) {
@@ -332,7 +345,34 @@ public class MainActivity extends AppCompatActivity
                             }
                         }
                     } catch (Exception e) {
-                        // Ignore errors
+                        //如果是从主界面进入的话，因为getIntent().getStringExtra(INTENT_OTRSTTA_to_MA)为null会报错，则执行以下
+                        if(device.getManufacturer().equals(Manufacturer_Imotom)
+                                || device.getManufacturer().equals(Manufacturer_Jiahua)){
+                            mAdapter.add(device);
+                            //offLineAdapter.remove(deviceOffLine);
+                            //如果upnp设备在线，则移除离线设备的显示
+                            if (deviceOffLineList.size() > -1) {
+                                offLineRecyclerView.setVisibility(View.VISIBLE);
+                                for (DeviceOffLine deviceOffLine : deviceOffLineList) {
+                                    int t = -1;
+                                    if (deviceOffLine.getDevice_model_number_add_serial_number().equals(device.getModelNumber()
+                                            + device.getSerialNumber())) {
+                                        Logger.e(deviceOffLine.getDevice_model_number_add_serial_number());
+                                        t = deviceOffLineList.indexOf(deviceOffLine);
+
+                                        if (t != -1) {
+                                            Message message = new Message();
+                                            message.what = OK_TEXT;
+                                            message.obj = t;
+                                            removeDataHandler.sendMessage(message);
+                                        } else {
+                                        }
+                                    }
+                                    Logger.e(deviceOffLine.getDevice_friendly_name());
+
+                                }
+                            }
+                        }
                         Logger.d("Error: " + e.getMessage());
                     }
                 });
@@ -363,7 +403,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        //设置右上的点击响应功能
+        //设置右上的点击响应功能刷新设备列表
         if (id == R.id.action_search) {
             mAdapter.clear();
             uPnPDeviceOffLineAdapter.clear();
@@ -386,12 +426,19 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_quXiaoDengLu) {
             PasswordHelp.savePassword(MainActivity.this, "nullCaoNiMa", "null", true);
+        } else if (id == R.id.nav_tiaoZhuanKeHuDuan) {
+            Intent intent = new Intent();
+            intent.setAction("android.intent.action.VIEW");
+            Uri content_url = Uri.parse("https://imotom01.dd.ezbox.cc:34443/otrs/customer.pl");
+            intent.setData(content_url);
+            startActivity(intent);
         } else if (id == R.id.nav_ruJianBanBen) {
-
+            startActivity(new Intent(this, OTRSKeHuWebActivity.class));
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
 }

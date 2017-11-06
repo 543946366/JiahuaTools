@@ -1,5 +1,6 @@
 package com.jiahua.jiahuatools.ui;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -63,8 +64,6 @@ public class NewGuanLiActivity extends AppCompatActivity implements Consts {
         setContentView(R.layout.activity_new_guan_li);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //toolbar.setTitle("");
-        //toolbar.setTitleTextColor(getResources().getColor(R.color.md_yellow_500));
         toolbar.setTitleTextColor(ContextCompat.getColor(this,R.color.md_yellow_500));
         setSupportActionBar(toolbar);
 
@@ -98,14 +97,20 @@ public class NewGuanLiActivity extends AppCompatActivity implements Consts {
     private void init() {
         //获取上个界面传过来的intent
         Intent intent = getIntent();
+        //获取设备URL
         myBaseUrl = intent.getStringExtra(Consts.INTENT_deviceURL);
+        //通过正则表达式获取设备IP地址
         deviceIP = myBaseUrl.replaceAll(REG, "$1");
+        //获取设备友好名
         displayFriendlyName = intent.getStringExtra(Consts.INTENT_display_friendly_name);
+        //获取设备序列号
         displaySerialNumber = intent.getStringExtra(Consts.INTENT_display_serial_number);
+        //获取设备型号
         displayModelNumber = intent.getStringExtra(Consts.INTENT_display_model_number);
-
+        //获取系统信息
         getSystemInfoHandler = new GetSystemInfoHandler(this,
                 displayFriendlyName, displayModelNumber, displaySerialNumber, deviceIP);
+        //获取设备服务能力
         getCapabilityHandler = new GetCapabilityHandler(this, displayModelNumber,
                 displaySerialNumber, deviceIP);
 
@@ -115,20 +120,24 @@ public class NewGuanLiActivity extends AppCompatActivity implements Consts {
         getCapability();
     }
 
+    @SuppressLint("WrongConstant")
     @OnClick({R.id.cv_new_guanLi_change_password, R.id.cv_new_guanLi_upgrad,R.id.cv_new_guanLi_ZBXX})
     public void onClick(View v) {
         switch (v.getId()) {
+                //修改WiFi密码按钮
             case R.id.cv_new_guanLi_change_password:
                 Intent intentXiuGai = new Intent(this, XiuGaiMiMaActivity.class);
                 intentXiuGai.putExtra(Consts.INTENT_deviceURL, myBaseUrl);
                 startActivity(intentXiuGai);
                 break;
 
+                //填写主板信息按钮
             case R.id.cv_new_guanLi_ZBXX:
                 startActivity(new Intent(this,TianXieZhuBanXinXiActivity.class)
                         .setFlags(109).putExtra(INTENT_deviceURL, deviceIP));
                 break;
 
+                //软件升级按钮
             case R.id.cv_new_guanLi_upgrad:
                 Intent intent;
                 if(displayModelNumber.equals(MT_cheJi_model_number)){
@@ -136,9 +145,13 @@ public class NewGuanLiActivity extends AppCompatActivity implements Consts {
                 }else {
                     intent = new Intent(this, CheckDevVersionActivity.class);
                 }
+                //传入设备URL
                 intent.putExtra(INTENT_deviceURL,myBaseUrl);
+                //传入设备序列号
                 intent.putExtra(INTENT_display_serial_number, displaySerialNumber);
+                //传入设备别名
                 intent.putExtra(INTENT_display_friendly_name, displayFriendlyName);
+                //传入设备类型
                 intent.putExtra(INTENT_display_model_number, displayModelNumber);
                 startActivity(intent);
                 break;

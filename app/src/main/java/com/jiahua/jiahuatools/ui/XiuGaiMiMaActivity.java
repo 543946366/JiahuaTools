@@ -56,12 +56,13 @@ public class XiuGaiMiMaActivity extends AppCompatActivity implements Consts {
             XiuGaiMiMaActivity activity = myActivity.get();
             switch (msg.what) {
                 case OK_TEXT:
-// 在这里可以进行UI操作
+                    // 在这里可以进行UI操作
                     Logger.d("4444444444");
-                    //本地保存WIFI密码
+                    //先判断本地是否保存了WiFi密码，如果已保存，则清空密码
                     if (SPUtils.contains(activity, "WIFI密码")) {
                         SPUtils.remove(activity, "WIFI密码");
                     }
+                    //本地保存WIFI密码
                     SPUtils.put(activity, "WIFI密码", activity.miMa_text);
                     activity.finish();
                     Toast.makeText(activity, "修改成功！请使用新密码登录WIFI！", Toast.LENGTH_SHORT).show();
@@ -83,7 +84,6 @@ public class XiuGaiMiMaActivity extends AppCompatActivity implements Consts {
         setContentView(R.layout.activity_xiu_gai_mi_ma);
         ButterKnife.bind(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //toolbar.setTitleTextColor(getResources().getColor(R.color.md_yellow_500));
         toolbar.setTitleTextColor(ContextCompat.getColor(this,R.color.md_yellow_500));
         setSupportActionBar(toolbar);
 
@@ -107,10 +107,8 @@ public class XiuGaiMiMaActivity extends AppCompatActivity implements Consts {
         btn_ok.setOnClickListener(view -> {
             if (et_again_XiuGaiMiMa.getText().toString().isEmpty() || et_newPassword_XiuGaiMiMa.getText().toString().isEmpty()) {
                 tvXiuGaiMiMaHint.setText("输入的新密码不能为空！");
-                //Toast.makeText(this, "输入的新密码不能为空！", Toast.LENGTH_SHORT).show();
             } else if ("12345678".equals(et_newPassword_XiuGaiMiMa.getText().toString()) || "12345678".equals(et_again_XiuGaiMiMa.getText().toString())) {
                 tvXiuGaiMiMaHint.setText(String.valueOf("出于安全考虑，新密码不能为初始密码12345678！"));
-                //Toast.makeText(this, "出于安全考虑，新密码不能为初始密码12345678！", Toast.LENGTH_SHORT).show();
                 et_newPassword_XiuGaiMiMa.setText("");
                 et_again_XiuGaiMiMa.setText("");
             } else if (et_newPassword_XiuGaiMiMa.getText().toString().equals(et_again_XiuGaiMiMa.getText().toString())) {

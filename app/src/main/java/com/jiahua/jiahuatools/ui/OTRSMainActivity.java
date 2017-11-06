@@ -41,7 +41,6 @@ public class OTRSMainActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //toolbar.setTitleTextColor(getResources().getColor(R.color.md_yellow_500));
         toolbar.setTitleTextColor(ContextCompat.getColor(this,R.color.md_yellow_500));
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
@@ -59,6 +58,8 @@ public class OTRSMainActivity extends AppCompatActivity {
                 break;
 
             case R.id.cv_otrsMain_history:
+                //暂时不对普通员工开放查看关闭工单功能
+                Snackbar.make(view,"暂无关闭的工单！",Snackbar.LENGTH_LONG).show();
                 break;
 
             case R.id.cv_otrsMain_current_task:
@@ -66,6 +67,7 @@ public class OTRSMainActivity extends AppCompatActivity {
                 break;
 
             case R.id.cv_otrsMain_out:
+                //想退出当前登录的账号，需要把当前已下载的工单任务全部完成，才能退出当前登录的员工账号
                 if(DataSupport.isExist(TicketTask.class)){
                     Snackbar.make(view,"当前账号还有未完成任务，请提交当前任务后再退出！",Snackbar.LENGTH_LONG)
                             .show();

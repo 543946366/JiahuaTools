@@ -1,11 +1,13 @@
 package com.jiahua.jiahuatools.ui;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,7 +20,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.dd.CircularProgressButton;
 import com.google.gson.GsonBuilder;
 import com.jiahua.jiahuatools.R;
 import com.jiahua.jiahuatools.bean.GetSystemInfoJson;
@@ -53,8 +54,8 @@ public class TianXieZhuBanXinXiActivity extends AppCompatActivity implements Con
     @BindView(R.id.tv_TXZBXX_swid)
     TextView tv_TXZBXX_swid;
 
-    @BindView(R.id.et_TXZBXX_mac)
-    EditText et_TXZBXX_mac;
+    /*@BindView(R.id.et_TXZBXX_mac)
+    EditText et_TXZBXX_mac;*/
 
     @BindView(R.id.tv_TXZBXX_stm32)
     TextView tv_TXZBXX_stm32;
@@ -74,8 +75,8 @@ public class TianXieZhuBanXinXiActivity extends AppCompatActivity implements Con
     @BindView(R.id.spinner_txzbxx_hwid)
     Spinner spinner_txzbxx_hwid;
 
-    @BindView(R.id.spinner_txzbxx_mac)
-    Spinner spinner_txzbxx_mac;
+    /*@BindView(R.id.spinner_txzbxx_mac)
+    Spinner spinner_txzbxx_mac;*/
 
     @BindView(R.id.et_TXZBXX_can_controler)
     EditText et_TXZBXX_can_controler;
@@ -85,9 +86,9 @@ public class TianXieZhuBanXinXiActivity extends AppCompatActivity implements Con
 
     @BindView(R.id.ll_txzbxx_canControler)
     LinearLayout ll_txzbxx_canControler;
-    @BindView(R.id.btn_TXZBXX_tiJiao)
-    CircularProgressButton btnTXZBXXTiJiao;
 
+    @BindView(R.id.cv_TXZBXX_tiJiao)
+    CardView cdTXZBXXTiJiao;
     private String data;
     private String myUrl;
     private GetSystemInfoJson getSystemInfoJson;
@@ -108,7 +109,6 @@ public class TianXieZhuBanXinXiActivity extends AppCompatActivity implements Con
             switch (msg.what) {
                 case OK_TEXT:
                     // 在这里可以进行UI操作
-                    // new DownloadTask().execute();
                     try {
                         int jsonSize = msg.obj.toString().indexOf("{");
                         String jsonContent;
@@ -128,9 +128,9 @@ public class TianXieZhuBanXinXiActivity extends AppCompatActivity implements Con
                         if (!activity.getSystemInfoJson.getSwid().isEmpty()) {
                             activity.tv_TXZBXX_swid.setText(activity.getSystemInfoJson.getSwid());
                         }
-                        if (!activity.getSystemInfoJson.getMac().isEmpty()) {
+                        /*if (!activity.getSystemInfoJson.getMac().isEmpty()) {
                             activity.et_TXZBXX_mac.setText(activity.getSystemInfoJson.getMac());
-                        }
+                        }*/
                         if (!activity.getSystemInfoJson.getStm32_ver().isEmpty()) {
                             activity.tv_TXZBXX_stm32.setText(activity.getSystemInfoJson.getStm32_ver());
                         }
@@ -173,13 +173,13 @@ public class TianXieZhuBanXinXiActivity extends AppCompatActivity implements Con
 
         init();
 
-        initView();
     }
 
+    @SuppressLint("WrongConstant")
     private void init() {
         Intent intent = getIntent();
         if (intent.getFlags() == 109) {
-
+            //通过主界面进入，获取设备的ip地址组装路径
             myUrl = intent.getStringExtra(INTENT_deviceURL);
             String url = "http://" + myUrl + ":8199/get_system_info";
             DigestAuthenticationUtil.startDigest(url, getSystemInfoHandler, "/get_system_info");
@@ -188,25 +188,30 @@ public class TianXieZhuBanXinXiActivity extends AppCompatActivity implements Con
             DigestAuthenticationUtil.startDigest(url, getSystemInfoHandler, "/get_system_info");
         }
 
+        //配置设备序列号可选集合组
         String[] canControls = getResources().getStringArray(R.array.sn);
         ArrayAdapter<String> canControlAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, canControls);
+        //为适配器配置字符组
         canControlAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner_txzbxx_sn.setAdapter(canControlAdapter);
         spinner_txzbxx_sn.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 et_TXZBXX_sn.setText((String) spinner_txzbxx_sn.getSelectedItem());
+                //根据序列号的选择，自动填写其他项目的数据
                 if (position == 1) {
                     et_TXZBXX_hwid.setText(getResources().getStringArray(R.array.hwid)[1]);
-                    et_TXZBXX_mac.setText(getResources().getStringArray(R.array.Mac)[1]);
+                    //et_TXZBXX_mac.setText(getResources().getStringArray(R.array.Mac)[1]);
+                    //如果是第一种选项(MT1828)，因为1828没有设备名和can，所以需要隐藏，防止误输入
                     ll_txzbxx_modelName.setVisibility(View.GONE);
                     ll_txzbxx_canControler.setVisibility(View.GONE);
                     et_TXZBXX_model_name.setText("");
                     et_TXZBXX_can_controler.setText("");
 
                 } else if (position == 2) {
+                    //第二选择类型为1845，因为1845需要填写设备名和can，所以需要显示
                     et_TXZBXX_hwid.setText(getResources().getStringArray(R.array.hwid)[2]);
-                    et_TXZBXX_mac.setText(getResources().getStringArray(R.array.Mac)[2]);
+                    //et_TXZBXX_mac.setText(getResources().getStringArray(R.array.Mac)[2]);
                     ll_txzbxx_modelName.setVisibility(View.VISIBLE);
                     ll_txzbxx_canControler.setVisibility(View.VISIBLE);
                     et_TXZBXX_model_name.setText(getResources().getStringArray(R.array.modelName)[2]);
@@ -226,19 +231,16 @@ public class TianXieZhuBanXinXiActivity extends AppCompatActivity implements Con
 
         setAdapter(spinner_txzbxx_hwid, et_TXZBXX_hwid, R.array.hwid);
 
-        setAdapter(spinner_txzbxx_mac, et_TXZBXX_mac, R.array.Mac);
+        //setAdapter(spinner_txzbxx_mac, et_TXZBXX_mac, R.array.Mac);
     }
 
-    private void initView() {
-        btnTXZBXXTiJiao.setIndeterminateProgressMode(true);
-    }
 
     @Override
     protected void onResume() {
-        btnTXZBXXTiJiao.setProgress(0);
-        btnTXZBXXTiJiao.setClickable(true);
+        cdTXZBXXTiJiao.setClickable(true);
         super.onResume();
     }
+
 
     private void setAdapter(Spinner spinner, EditText editText, int arrayNumber) {
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, getResources().getStringArray(arrayNumber));
@@ -256,20 +258,21 @@ public class TianXieZhuBanXinXiActivity extends AppCompatActivity implements Con
         });
     }
 
-    @OnClick(R.id.btn_TXZBXX_tiJiao)
+    @SuppressLint("WrongConstant")
+    @OnClick(R.id.cv_TXZBXX_tiJiao)
     public void tiJiao() {
-        btnTXZBXXTiJiao.setProgress(50);
-        btnTXZBXXTiJiao.setClickable(false);
+        cdTXZBXXTiJiao.setClickable(false);
         /*data = "{\"sn\":\""+et_TXZBXX_sn.getText().toString()+
                 "\",\"hwid\":\""+et_TXZBXX_hwid.getText().toString()+
                 //"\",\"swid\":\""+et_TXZBXX_swid.getText().toString()+
                 "\",\"mac\":\""+et_TXZBXX_mac.getText().toString()+
                 "\"}";*/
 
+        //拼接需要提交的
         GetSystemInfoJson getSystemInfoJson = new GetSystemInfoJson();
         getSystemInfoJson.setSn(et_TXZBXX_sn.getText().toString());
         getSystemInfoJson.setHwid(et_TXZBXX_hwid.getText().toString());
-        getSystemInfoJson.setMac(et_TXZBXX_mac.getText().toString());
+        //getSystemInfoJson.setMac(et_TXZBXX_mac.getText().toString());
         if (!et_TXZBXX_model_name.getText().toString().isEmpty()) {
             getSystemInfoJson.setModel_name(et_TXZBXX_model_name.getText().toString());
             getSystemInfoJson.setCan_controler(et_TXZBXX_can_controler.getText().toString());
@@ -311,7 +314,8 @@ public class TianXieZhuBanXinXiActivity extends AppCompatActivity implements Con
                             .execute(new StringCallback() {
                                 @Override
                                 public void onError(Call call, Exception e, int id) {
-                                    btnTXZBXXTiJiao.setProgress(-1);
+                                    Toast.makeText(TianXieZhuBanXinXiActivity.this, "提交失败，请重试！", Toast.LENGTH_LONG).show();
+                                    cdTXZBXXTiJiao.setClickable(true);
                                     L.e("TXZ_error-------------" + e.getMessage());
                                 }
 
@@ -319,15 +323,11 @@ public class TianXieZhuBanXinXiActivity extends AppCompatActivity implements Con
                                 public void onResponse(String response, int id) {
                                     L.e("TXZ_ok-------------" + response);
                                     if (response.contains("200")) {
-                                        btnTXZBXXTiJiao.setProgress(100);
                                         TicketTask ticketTask = new TicketTask();
                                         ticketTask.setAccomplish(true);
                                         ticketTask.saveOrUpdate(Consts.DEVICE_SN + "=?", et_TXZBXX_sn.getText().toString());
-                                        //Toast.makeText(TianXieZhuBanXinXiActivity.this, "修改成功。", Toast.LENGTH_SHORT).show();
-                                        new Handler().postDelayed(() ->{
-                                            btnTXZBXXTiJiao.setProgress(0);
-                                            btnTXZBXXTiJiao.setClickable(true);
-                                        },2000);
+                                        Toast.makeText(TianXieZhuBanXinXiActivity.this, "修改成功。", Toast.LENGTH_LONG).show();
+                                        cdTXZBXXTiJiao.setClickable(true);
 
                                     }
                                 }
@@ -361,19 +361,19 @@ public class TianXieZhuBanXinXiActivity extends AppCompatActivity implements Con
     }
 
     private void saveData() {
-        if(DataSupport.isExist(TicketTask.class,"Flag=?","1")){
-            TicketTask ticketTask = DataSupport.where("Flag=?","1").findFirst(TicketTask.class);
+        if (DataSupport.isExist(TicketTask.class, "Flag=?", "1")) {
+            TicketTask ticketTask = DataSupport.where("Flag=?", "1").findFirst(TicketTask.class);
             Logger.e(ticketTask.getSn());
             ticketTask.setFlag(false);
             ticketTask.saveOrUpdate(Consts.DEVICE_SN + "=?", ticketTask.getSn());
             et_TXZBXX_sn.setText(ticketTask.getSn());
             et_TXZBXX_hwid.setText(ticketTask.getHwid());
-            et_TXZBXX_mac.setText(ticketTask.getMac());
+            //et_TXZBXX_mac.setText(ticketTask.getMac());
             et_TXZBXX_model_name.setVisibility(View.GONE);
             et_TXZBXX_can_controler.setVisibility(View.GONE);
             Toast.makeText(this, "导入数据成功，确认无误后请点击提交！", Toast.LENGTH_SHORT).show();
 
-        }else{
+        } else {
             Toast.makeText(this, "当前无数据可导入，请手动填写！", Toast.LENGTH_SHORT).show();
         }
 

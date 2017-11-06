@@ -38,8 +38,10 @@ public class SplashActivity extends AppCompatActivity {
     private void jump() {
         new Handler().postDelayed(() -> {
             if (DataSupport.isExist(UserAndPassword.class)) {
+                //判断本地是否有保存密码，如果本地保存好密码，则说明已经有登录过的账号，直接跳转到主界面
                 startActivity(new Intent(this, MainActivity.class));
             } else {
+                //如果没有本地保存密码，则跳转到登录界面
                 startActivity(new Intent(SplashActivity.this, AccountLoginActivity.class));
                 Logger.e("当前没有账号记录");
             }

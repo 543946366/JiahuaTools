@@ -149,6 +149,10 @@
             android:name=".ui.OTRSTicketTaskActivity"
             android:label="@string/title_activity_otrsticket_task"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.OTRSKeHuWebActivity"
+            android:label="@string/title_activity_otrske_hu_web"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

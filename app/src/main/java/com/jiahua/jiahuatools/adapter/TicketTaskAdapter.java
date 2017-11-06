@@ -24,8 +24,7 @@ public class TicketTaskAdapter extends BaseQuickAdapter<TicketTask,BaseViewHolde
         helper.setText(R.id.tv_item_ticket_task_type,item.getModel_number())
                 .setText(R.id.tv_item_ticket_task_swid,item.getSwid())
                 .setText(R.id.tv_item_ticket_task_hwid,item.getHwid())
-                .setText(R.id.tv_item_ticket_task_sn,item.getSn())
-                .setText(R.id.tv_item_ticket_task_mac,item.getMac());
+                .setText(R.id.tv_item_ticket_task_sn,item.getSn());
         if(item.isAccomplish()){
             helper.setImageResource(R.id.iv_item_ticket_task,android.R.drawable.checkbox_on_background)
                     .setBackgroundColor(R.id.ll_item_ticket_task, Color.GREEN);

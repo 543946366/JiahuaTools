@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">产测APP</string>
-    <string name="software_version">软件版本:v1.0.1_test4</string>
+    <string name="software_version">软件版本:v1.0.1_test6</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -84,5 +84,6 @@
     <string name="title_activity_otrsmain">OTRS工单系统</string>
     <string name="title_activity_otrslock">锁定的工单</string>
     <string name="title_activity_otrsticket_task">工单任务</string>
+    <string name="title_activity_otrske_hu_web">OTRSKeHuWebActivity</string>
 
 </resources>

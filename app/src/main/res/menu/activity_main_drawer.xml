@@ -9,6 +9,11 @@
             android:title="@string/cancel_automatic_login" />
 
         <item
+            android:id="@+id/nav_tiaoZhuanKeHuDuan"
+            android:icon="@drawable/ic_open_in_new_black_24dp"
+            android:title="跳转到OTRS客户登录"
+            />
+        <item
             android:id="@+id/nav_ruJianBanBen"
             android:icon="@drawable/ic_info_black_24dp"
             android:title="@string/software_version" />

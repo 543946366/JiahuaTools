@@ -2,15 +2,18 @@ package com.jiahua.jiahuatools.ui;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.dd.CircularProgressButton;
 import com.jiahua.jiahuatools.MainActivity;
 import com.jiahua.jiahuatools.R;
 import com.jiahua.jiahuatools.bean.UserAndPassword;
@@ -31,8 +34,10 @@ public class AccountLoginActivity extends AppCompatActivity {
     EditText etAccountLoginUsername;
     @BindView(R.id.et_accountLogin_password)
     EditText etAccountLoginPassword;
-    @BindView(R.id.btn_accountLogin_dengLu)
-    CircularProgressButton btnAccountLoginDengLu;
+    @BindView(R.id.cd_accountLogin_tiJiao)
+    CardView cdAccountLoginTiJiao;
+    @BindView(R.id.tv_account)
+    TextView tvAccount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,22 +63,29 @@ public class AccountLoginActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        btnAccountLoginDengLu.setIndeterminateProgressMode(true);
-
+        //为跳转到OTRS客户端添加下划线
+        tvAccount.getPaint().setFlags(Paint. UNDERLINE_TEXT_FLAG );
+        tvAccount.setOnClickListener(v -> {
+            //通过输入指定网址
+            Intent intent = new Intent();
+            intent.setAction("android.intent.action.VIEW");
+            Uri content_url = Uri.parse("https://imotom01.dd.ezbox.cc:34443/otrs/customer.pl");
+            intent.setData(content_url);
+            startActivity(intent);
+        });
     }
 
     @Override
     protected void onResume() {
-        btnAccountLoginDengLu.setProgress(0);
-        btnAccountLoginDengLu.setClickable(true);
+        cdAccountLoginTiJiao.setClickable(true);
 
         super.onResume();
     }
 
-    @OnClick(R.id.btn_accountLogin_dengLu)
+    @OnClick(R.id.cd_accountLogin_tiJiao)
     public void onclick(View view) {
-        btnAccountLoginDengLu.setProgress(50);
-        btnAccountLoginDengLu.setClickable(false);
+        cdAccountLoginTiJiao.setClickable(false);
+        //根据填写的账号及密码进行验证
         String user = etAccountLoginUsername.getText().toString();
         String password = etAccountLoginPassword.getText().toString();
 
@@ -82,23 +94,22 @@ public class AccountLoginActivity extends AppCompatActivity {
             @Override
             public void onError(Call call, Exception e, int id) {
                 Toast.makeText(AccountLoginActivity.this, "登录失败，请重试！", Toast.LENGTH_SHORT).show();
-                btnAccountLoginDengLu.setProgress(0);
-                btnAccountLoginDengLu.setClickable(true);
+                cdAccountLoginTiJiao.setClickable(true);
             }
 
             @Override
             public void onResponse(String response, int id) {
                 if (response.contains("TicketSearch.AuthFail")) {
-                    btnAccountLoginDengLu.setProgress(0);
-                    btnAccountLoginDengLu.setClickable(true);
+                    //如果验证失败，则response会返回TicketSearch.AuthFail
+                    cdAccountLoginTiJiao.setClickable(true);
                     Toast.makeText(AccountLoginActivity.this, "登录失败，账号或者密码错误！", Toast.LENGTH_SHORT).show();
                 } else {
+                    //验证成功后，本地保存账号和密码
                     UserAndPassword userAndPassword = new UserAndPassword();
                     userAndPassword.setUser(user);
                     userAndPassword.setPassword(password);
                     userAndPassword.saveOrUpdate("id=?", "1");
 
-                    btnAccountLoginDengLu.setProgress(100);
                     startActivity(new Intent(AccountLoginActivity.this, MainActivity.class));
                     finish();
                 }
