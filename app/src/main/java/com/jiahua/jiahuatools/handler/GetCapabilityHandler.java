@@ -3,6 +3,7 @@ package com.jiahua.jiahuatools.handler;
  * Created by ZhiPeng Huang on 2017-08-24.
  */
 
+import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -19,14 +20,15 @@ import java.lang.ref.WeakReference;
 
 public class GetCapabilityHandler extends Handler implements Consts {
 
-    private WeakReference<NewGuanLiActivity> myActivity;
+    //private WeakReference<NewGuanLiActivity> myActivity;
+    private Context context;
     private String displayModelNumber;
     private String displaySerialNumber;
     private String deviceIP;
 
 
-    public GetCapabilityHandler(NewGuanLiActivity myActivity,String displayModelNumber,String displaySerialNumber, String deviceIP) {
-        this.myActivity = new WeakReference<>(myActivity);
+    public GetCapabilityHandler(WeakReference<Context> weakContext, String displayModelNumber, String displaySerialNumber, String deviceIP) {
+        this.context = weakContext.get();
         this.displayModelNumber = displayModelNumber;
         this.displaySerialNumber = displaySerialNumber;
         this.deviceIP = deviceIP;
@@ -35,11 +37,10 @@ public class GetCapabilityHandler extends Handler implements Consts {
     @Override
     public void handleMessage(Message msg) {
         super.handleMessage(msg);
-        NewGuanLiActivity activity = myActivity.get();
+        NewGuanLiActivity activity = (NewGuanLiActivity) context;
         switch (msg.what) {
             case OK_TEXT:
                 // 在这里可以进行UI操作
-                // new DownloadTask().execute();
                 try {
                     String fuWuList = "";
 

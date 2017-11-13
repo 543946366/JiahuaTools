@@ -20,6 +20,8 @@ import com.jiahua.jiahuatools.utils.DigestAuthenticationUtil;
 import com.jiahua.jiahuatools.utils.SPUtils;
 import com.orhanobut.logger.Logger;
 
+import java.lang.ref.WeakReference;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -52,7 +54,7 @@ public class NewGuanLiActivity extends AppCompatActivity implements Consts {
 
     public GetSystemInfoHandler getSystemInfoHandler;
     private GetCapabilityHandler getCapabilityHandler;
-    public GetWifiPasswordHandler getWifiPasswordHandler = new GetWifiPasswordHandler(this);
+    public GetWifiPasswordHandler getWifiPasswordHandler = new GetWifiPasswordHandler(new WeakReference<>(this));
     private String displayModelNumber;
     private String displaySerialNumber;
     private String displayFriendlyName;
@@ -108,10 +110,10 @@ public class NewGuanLiActivity extends AppCompatActivity implements Consts {
         //获取设备型号
         displayModelNumber = intent.getStringExtra(Consts.INTENT_display_model_number);
         //获取系统信息
-        getSystemInfoHandler = new GetSystemInfoHandler(this,
+        getSystemInfoHandler = new GetSystemInfoHandler(new WeakReference<>(this),
                 displayFriendlyName, displayModelNumber, displaySerialNumber, deviceIP);
         //获取设备服务能力
-        getCapabilityHandler = new GetCapabilityHandler(this, displayModelNumber,
+        getCapabilityHandler = new GetCapabilityHandler(new WeakReference<>(this), displayModelNumber,
                 displaySerialNumber, deviceIP);
 
         Logger.e(myBaseUrl + "===" + displayFriendlyName +

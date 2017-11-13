@@ -22,6 +22,7 @@ public class UPnPDeviceOffLineAdapter extends RecyclerView.Adapter<UPnPDeviceOff
     private List<DeviceOffLine> mDatas;
     private LayoutInflater mInflater;
 
+    //设置点击接口
     public interface OnItemClickLitener {
         void onItemClick(View view, int position);
 
@@ -49,12 +50,14 @@ public class UPnPDeviceOffLineAdapter extends RecyclerView.Adapter<UPnPDeviceOff
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         DeviceOffLine item = getItem(position);
+        //如果item别称控件及图标控件不为空
         if (holder.friendlyName != null && holder.icon != null) {
             String devName = item.getDevice_friendly_name();
             if (TextUtils.isEmpty(devName)) {
                 devName = "[unnamed]";
             }
-            holder.friendlyName.setText(devName + "（离线）\n(" + item.getDevice_model_number_add_serial_number() + ")");
+            holder.friendlyName.setText(String.valueOf(devName + "（离线）\n(" + item.getDevice_model_number_add_serial_number() + ")"));
+            //如果获取不到设备的类型，获取设备类型为空，则设置车机图标
             if (item.getDevice_model_number() == null || "".equals(item.getDevice_model_number())) {
                 holder.icon.setImageResource(R.mipmap.cheji_off_icon);
             } else {

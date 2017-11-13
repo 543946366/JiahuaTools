@@ -316,8 +316,7 @@ public class UPnPDeviceAdapter extends RecyclerView.Adapter<UPnPDeviceAdapter.Vi
                     System.out.println(response.code());
                     System.out.println("错误：" + response.message());
 
-
-                    Intent intent = new Intent();
+                    Intent intent;
                     if (response.code() == 200) {
                         //mTv.setText("登录成功");
                         intent = new Intent(myContext, NewGuanLiActivity.class);

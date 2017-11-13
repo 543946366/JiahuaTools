@@ -355,6 +355,7 @@ public class MainActivity extends AppCompatActivity
                                 offLineRecyclerView.setVisibility(View.VISIBLE);
                                 for (DeviceOffLine deviceOffLine : deviceOffLineList) {
                                     int t = -1;
+                                    //如果离线设备列表设备包含在线设备，则把离线设备设备移除
                                     if (deviceOffLine.getDevice_model_number_add_serial_number().equals(device.getModelNumber()
                                             + device.getSerialNumber())) {
                                         Logger.e(deviceOffLine.getDevice_model_number_add_serial_number());
@@ -365,7 +366,6 @@ public class MainActivity extends AppCompatActivity
                                             message.what = OK_TEXT;
                                             message.obj = t;
                                             removeDataHandler.sendMessage(message);
-                                        } else {
                                         }
                                     }
                                     Logger.e(deviceOffLine.getDevice_friendly_name());

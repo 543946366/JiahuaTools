@@ -3,6 +3,7 @@ package com.jiahua.jiahuatools.handler;
  * Created by ZhiPeng Huang on 2017-08-24.
  */
 
+import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -22,14 +23,15 @@ import java.lang.ref.WeakReference;
 import okhttp3.Call;
 
 public class GetSystemInfoHandler extends Handler implements Consts {
-    private WeakReference<NewGuanLiActivity> myActivity;
+    //private WeakReference<NewGuanLiActivity> myActivity;
+    private Context context;
     private String displayFriendlyName;
     private String displayModelNumber;
     private String displaySerialNumber;
     private String displayIP;
 
-    public GetSystemInfoHandler(NewGuanLiActivity myActivity,String displayFriendlyName,String displayModelNumber,String displaySerialNumber, String displayIP) {
-        this.myActivity = new WeakReference<>(myActivity);
+    public GetSystemInfoHandler(WeakReference<Context> weakContext, String displayFriendlyName, String displayModelNumber, String displaySerialNumber, String displayIP) {
+        this.context = weakContext.get();
         this.displayFriendlyName = displayFriendlyName;
         this.displayModelNumber = displayModelNumber;
         this.displaySerialNumber = displaySerialNumber;
@@ -39,7 +41,7 @@ public class GetSystemInfoHandler extends Handler implements Consts {
     @Override
     public void handleMessage(Message msg) {
         super.handleMessage(msg);
-        NewGuanLiActivity activity = myActivity.get();
+        NewGuanLiActivity activity = (NewGuanLiActivity) context;
         switch (msg.what) {
             case OK_TEXT:
                 // 在这里可以进行UI操作
@@ -116,7 +118,7 @@ public class GetSystemInfoHandler extends Handler implements Consts {
 
     //国科升级软件包查询
     private void guoKeRuanJianBaoShengJiChaXun(final String dangQianBanBenName) {
-        NewGuanLiActivity activity = myActivity.get();
+        NewGuanLiActivity activity = (NewGuanLiActivity)context;
         //String url = "http://120.27.94.20:10080/vendor/imotom/MT1828/upgrade.txt";
         OkHttpUtils
                 .get()
@@ -136,12 +138,12 @@ public class GetSystemInfoHandler extends Handler implements Consts {
                         for (String str : response.split(";")) {
                             Log.d("TAG", "当前坂本为：" + str.split(":")[0].trim());
                             if (str.split(":")[0].trim().equals(dangQianBanBenName)) {
-                                Log.d("TAG", "下个升级的坂本为：" + str.split(":")[1]);
                                 if ("new".equals(str.split(":")[1])) {
                                     activity.tvNewGuanLiDevVersion.setText("当前已是最新版本，无需升级！");
                                 } else {
-                                    activity.tvNewGuanLiDevVersion.setText("有新版本：" + str.split(":")[1] + "\n请尽快联系4S店或者厂家升级！");
+                                    activity.tvNewGuanLiDevVersion.setText(String.valueOf("有新版本：" + str.split(":")[1] + "\n请尽快联系4S店或者厂家升级！"));
                                 }
+                                Log.d("TAG", "下个升级的坂本为：" + str.split(":")[1]);
                                 return;
                             } else {
                                 //当网络上无此版本号时，提示无需升级
@@ -156,7 +158,7 @@ public class GetSystemInfoHandler extends Handler implements Consts {
 
     //车机升级软件包查询
     private void cheJiRuanJianBaoChaXun() {
-        NewGuanLiActivity activity = myActivity.get();
+        NewGuanLiActivity activity = (NewGuanLiActivity)context;
         //String url = "http://120.27.94.20:10080/vendor/imotom/MT1845/upgrade.txt";
         OkHttpUtils
                 .get()

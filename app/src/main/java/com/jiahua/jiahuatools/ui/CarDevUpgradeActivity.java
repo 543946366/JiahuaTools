@@ -196,8 +196,6 @@ public class CarDevUpgradeActivity extends AppCompatActivity implements Consts {
 
     /**
      * 根据国科提供的版本号再查询网络看下个升级的版本是什么
-     *
-     *
      */
     private void xiaBanBenShengJi() {
 

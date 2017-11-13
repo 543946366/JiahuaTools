@@ -20,6 +20,7 @@ public class LockTicketAdapter extends BaseQuickAdapter<TicketInfoJson.TicketBea
 
     @Override
     protected void convert(BaseViewHolder helper, TicketInfoJson.TicketBean item) {
+        //配置item
         helper.setText(R.id.tv_item_lock_ticket_number,"工单编号：\n" + item.getTicketNumber())
                 .setText(R.id.tv_item_lock_ticket_title,"工单标题：\n" + item.getTitle())
                 .addOnClickListener(R.id.cv_item_lock_ticket_task);

@@ -25,6 +25,7 @@ public class TicketTaskAdapter extends BaseQuickAdapter<TicketTask,BaseViewHolde
                 .setText(R.id.tv_item_ticket_task_swid,item.getSwid())
                 .setText(R.id.tv_item_ticket_task_hwid,item.getHwid())
                 .setText(R.id.tv_item_ticket_task_sn,item.getSn());
+        //根据item中的工单是否已经完成，显示不同的颜色
         if(item.isAccomplish()){
             helper.setImageResource(R.id.iv_item_ticket_task,android.R.drawable.checkbox_on_background)
                     .setBackgroundColor(R.id.ll_item_ticket_task, Color.GREEN);

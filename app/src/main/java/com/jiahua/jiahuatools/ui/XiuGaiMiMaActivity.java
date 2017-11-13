@@ -70,7 +70,6 @@ public class XiuGaiMiMaActivity extends AppCompatActivity implements Consts {
 
                 case NO_TEXT:
                     activity.tvXiuGaiMiMaHint.setText("修改失败！请重试！");
-                    //Toast.makeText(activity, "修改失败！请重试！", Toast.LENGTH_SHORT).show();
                     break;
                 default:
                     break;
