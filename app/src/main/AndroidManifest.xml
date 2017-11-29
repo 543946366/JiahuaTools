@@ -21,31 +21,31 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
-            android:name=".MainActivity"
+            android:name=".upnp.MainActivity"
             android:label="@string/title_activity_main"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.DengLuActivity"
             android:label="@string/title_activity_deng_lu"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName=".upnp.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             tools:targetApi="jelly_bean">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.jiahua.jiahuatools.MainActivity" />
+                android:value="com.jiahua.jiahuatools.upnp.MainActivity" />
         </activity>
         <activity
             android:name=".ui.GuanLiActivity"
             android:label="@string/title_activity_guan_li"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName=".upnp.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             tools:targetApi="jelly_bean">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.jiahua.jiahuatools.MainActivity" />
+                android:value="com.jiahua.jiahuatools.upnp.MainActivity" />
         </activity>
         <activity
             android:name=".ui.CheckDevVersionActivity"
@@ -111,7 +111,7 @@
             tools:targetApi="jelly_bean">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.jiahua.jiahuatools.MainActivity" />
+                android:value="com.jiahua.jiahuatools.upnp.MainActivity" />
         </activity>
 
         <service android:name=".service.NewDownloadAppService" />
@@ -120,12 +120,12 @@
         <activity
             android:name=".ui.NewOffLineListActivity"
             android:label="@string/title_activity_new_off_line_list"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName=".upnp.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.jiahua.jiahuatools.MainActivity" />
+                android:value="com.jiahua.jiahuatools.upnp.MainActivity" />
         </activity>
         <activity
             android:name=".ui.AccountLoginActivity"

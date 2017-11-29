@@ -45,7 +45,7 @@ import okhttp3.Response;
 /**
  * @author Administrator
  */
-public class UpnpDevice {
+public class UPnPDevice {
 
 	private String mRawUPnP;
 	private String mRawXml;
@@ -55,7 +55,7 @@ public class UpnpDevice {
 	private HashMap<String, String> mProperties;
 	private String mCachedIconUrl;
 
-	private UpnpDevice() {
+	private UPnPDevice() {
 	}
 
 	private String getHost() {
@@ -146,10 +146,10 @@ public class UpnpDevice {
 	// UPnP Response Parsing
 	////////////////////////////////////////////////////////////////////////////////
 
-	static UpnpDevice getInstance(String raw) {
+	static UPnPDevice getInstance(String raw) {
 		HashMap<String, String> parsed = parseRaw(raw);
 		try {
-			UpnpDevice device = new UpnpDevice();
+			UPnPDevice device = new UPnPDevice();
 			device.mRawUPnP = raw;
 			device.mProperties = parsed;
 			device.mLocation = new URL(parsed.get("upnp_location"));

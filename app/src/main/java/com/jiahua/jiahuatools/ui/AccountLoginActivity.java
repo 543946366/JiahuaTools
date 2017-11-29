@@ -14,7 +14,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.jiahua.jiahuatools.MainActivity;
+import com.jiahua.jiahuatools.upnp.MainActivity;
 import com.jiahua.jiahuatools.R;
 import com.jiahua.jiahuatools.bean.UserAndPassword;
 import com.zhy.http.okhttp.OkHttpUtils;

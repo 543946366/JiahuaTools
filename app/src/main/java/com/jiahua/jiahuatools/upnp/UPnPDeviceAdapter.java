@@ -55,12 +55,12 @@ import static com.jiahua.jiahuatools.consts.Consts.CHONG_QI_TEXT;
 public class UPnPDeviceAdapter extends RecyclerView.Adapter<UPnPDeviceAdapter.ViewHolder> {
 
     /*public interface ItemClickListener {
-        void onClick(UpnpDevice item, int position);
+        void onClick(UPnPDevice item, int position);
     }*/
 
-    private Comparator<UpnpDevice> mComparator = new UPnPDeviceComparator();
+    private Comparator<UPnPDevice> mComparator = new UPnPDeviceComparator();
 
-    private ArrayList<UpnpDevice> mItems;
+    private ArrayList<UPnPDevice> mItems;
     //private ItemClickListener mListener;
 
     private String myURL;
@@ -90,7 +90,7 @@ public class UPnPDeviceAdapter extends RecyclerView.Adapter<UPnPDeviceAdapter.Vi
         return mItems.size();
     }
 
-    private UpnpDevice getItem(int position) {
+    private UPnPDevice getItem(int position) {
         return mItems.get(position);
     }
 
@@ -100,7 +100,7 @@ public class UPnPDeviceAdapter extends RecyclerView.Adapter<UPnPDeviceAdapter.Vi
         notifyItemRangeRemoved(0, count);
     }
 
-    public void add(UpnpDevice item) {
+    public void add(UPnPDevice item) {
         int index = Collections.binarySearch(mItems, item, mComparator);
         if (index < 0) {
             int position = -index - 1;
@@ -131,7 +131,7 @@ public class UPnPDeviceAdapter extends RecyclerView.Adapter<UPnPDeviceAdapter.Vi
 
             viewHolder.tv_item_upnp_device_guanLi.setOnClickListener(v -> {
                 int position = viewHolder.getAdapterPosition();
-                UpnpDevice upnpDev = mItems.get(position);
+                UPnPDevice upnpDev = mItems.get(position);
 
                 myURL = upnpDev.getPresentationURL();
                 //myURL = "http://192.168.63.9:8099";
@@ -149,7 +149,7 @@ public class UPnPDeviceAdapter extends RecyclerView.Adapter<UPnPDeviceAdapter.Vi
      *
      *
      */
-    /*private void showDeviceXinxiDialog(UpnpDevice deviceDisplay) {
+    /*private void showDeviceXinxiDialog(UPnPDevice deviceDisplay) {
         final AlertDialog dialog = new AlertDialog.Builder(myContext).create();
         dialog.setTitle("设备信息");
         dialog.setMessage(deviceDisplay.getMyDetailsMsg());
@@ -163,7 +163,7 @@ public class UPnPDeviceAdapter extends RecyclerView.Adapter<UPnPDeviceAdapter.Vi
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        UpnpDevice item = getItem(position);
+        UPnPDevice item = getItem(position);
         if (holder.friendlyName != null && holder.icon != null) {
             String devName = item.getDevName();
             if (TextUtils.isEmpty(devName)) {

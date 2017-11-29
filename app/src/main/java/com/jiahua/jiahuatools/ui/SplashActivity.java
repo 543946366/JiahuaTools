@@ -8,7 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.WindowManager;
 
-import com.jiahua.jiahuatools.MainActivity;
+import com.jiahua.jiahuatools.upnp.MainActivity;
 import com.jiahua.jiahuatools.R;
 import com.jiahua.jiahuatools.bean.UserAndPassword;
 import com.orhanobut.logger.Logger;

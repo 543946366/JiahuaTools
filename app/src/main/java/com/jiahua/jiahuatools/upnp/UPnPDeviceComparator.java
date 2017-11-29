@@ -24,9 +24,9 @@ import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.Comparator;
 
-public class UPnPDeviceComparator implements Comparator<UpnpDevice> {
+public class UPnPDeviceComparator implements Comparator<UPnPDevice> {
 	@Override
-	public int compare(UpnpDevice lhs, UpnpDevice rhs) {
+	public int compare(UPnPDevice lhs, UPnPDevice rhs) {
 		// Handle null objects
 		int compare = compareNull(lhs, rhs);
 		if (compare == 0 && lhs == null) {

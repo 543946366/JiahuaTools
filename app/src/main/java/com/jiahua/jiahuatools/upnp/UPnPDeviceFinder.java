@@ -29,8 +29,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import rx.Observable;
-import rx.Subscriber;
+import io.reactivex.Observable;
+
 
 /**
  * Based on:
@@ -67,40 +67,37 @@ public class UPnPDeviceFinder {
 		}
 	}
 
-	public Observable<UpnpDevice> observe() {
-		return Observable.create(new Observable.OnSubscribe<UpnpDevice>() {
-			@Override
-			public void call(Subscriber<? super UpnpDevice> subscriber) {
-				if (mSock == null) {
-					subscriber.onError(new Exception("socket is null"));
-					return;
-				}
+	public Observable<UPnPDevice> observe() {
+		return Observable.create(subscriber -> {
+            if (mSock == null) {
+                subscriber.onError(new Exception("socket is null"));
+                return;
+            }
 
-				try {
-					// Broadcast SSDP search messages
-					mSock.sendMulticastMsg();
+            try {
+                // Broadcast SSDP search messages
+                mSock.sendMulticastMsg();
 
-					// Listen to responses from network until the socket timeout
-					while (true) {
-						Log.e(TAG, "wait for dev. response");
-						DatagramPacket dp = mSock.receiveMulticastMsg();
-						String receivedString = new String(dp.getData());
-						receivedString = receivedString.substring(0, dp.getLength());
-						Log.e(TAG, "found dev: " + receivedString);
-						UpnpDevice device = UpnpDevice.getInstance(receivedString);
-						if (device != null) {
-							subscriber.onNext(device);
-						}
-					}
-				}
-				catch (IOException e) {
-					//sock timeout will get us out of the loop
-					Log.e(TAG, "time out");
-					mSock.close();
-					subscriber.onCompleted();
-				}
-			}
-		});
+                // Listen to responses from network until the socket timeout
+                while (true) {
+                    Log.e(TAG, "wait for dev. response");
+                    DatagramPacket dp = mSock.receiveMulticastMsg();
+                    String receivedString = new String(dp.getData());
+                    receivedString = receivedString.substring(0, dp.getLength());
+                    Log.e(TAG, "found dev: " + receivedString);
+                    UPnPDevice device = UPnPDevice.getInstance(receivedString);
+                    if (device != null) {
+                        subscriber.onNext(device);
+                    }
+                }
+            }
+            catch (IOException e) {
+                //sock timeout will get us out of the loop
+                Log.e(TAG, "time out");
+                mSock.close();
+                subscriber.onComplete();
+            }
+        });
 
 	}
 
