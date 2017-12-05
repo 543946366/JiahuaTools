@@ -85,5 +85,6 @@
     <string name="title_activity_otrslock">锁定的工单</string>
     <string name="title_activity_otrsticket_task">工单任务</string>
     <string name="title_activity_otrske_hu_web">OTRSKeHuWebActivity</string>
+    <string name="title_activity_set_wifi_sta_settings">修改连接的热点</string>
 
 </resources>

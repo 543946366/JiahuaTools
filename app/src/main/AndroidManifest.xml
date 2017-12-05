@@ -152,7 +152,11 @@
         <activity
             android:name=".ui.OTRSKeHuWebActivity"
             android:label="@string/title_activity_otrske_hu_web"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".view.SetWifiStaSettingsActivity"
+            android:label="@string/title_activity_set_wifi_sta_settings"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

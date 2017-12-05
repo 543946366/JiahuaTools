@@ -67,6 +67,7 @@ public class GetCapabilityHandler extends Handler implements Consts {
                     if (fuWuList.contains("wifi_pwd_retrieve")) {
                         activity.cvNewGuanLiWifiPassword.setVisibility(View.VISIBLE);
                         new Handler().postDelayed(() -> DigestAuthenticationUtil.startDigest("http://" + deviceIP + ":8199/wifi_pwd_retrieve",activity.getWifiPasswordHandler,"/wifi_pwd_retrieve"),2000);
+                        new Handler().postDelayed(() -> DigestAuthenticationUtil.startDigest("http://" + deviceIP + ":8199/get_wifi_sta_settings",activity.getWifiStaSsidHandler,"/get_wifi_sta_settings"),3500);
                         }
                     if (fuWuList.contains("wifi_pwd_update")) {
                         activity.cvNewGuanLiChangePassword.setVisibility(View.VISIBLE);

@@ -16,8 +16,10 @@ import com.jiahua.jiahuatools.consts.Consts;
 import com.jiahua.jiahuatools.handler.GetCapabilityHandler;
 import com.jiahua.jiahuatools.handler.GetSystemInfoHandler;
 import com.jiahua.jiahuatools.handler.GetWifiPasswordHandler;
+import com.jiahua.jiahuatools.handler.GetWifiStaSsidHandler;
 import com.jiahua.jiahuatools.utils.DigestAuthenticationUtil;
 import com.jiahua.jiahuatools.utils.SPUtils;
+import com.jiahua.jiahuatools.view.SetWifiStaSettingsActivity;
 import com.orhanobut.logger.Logger;
 
 import java.lang.ref.WeakReference;
@@ -48,6 +50,8 @@ public class NewGuanLiActivity extends AppCompatActivity implements Consts {
     CardView cvNewGuanLiUpgrade;
     @BindView(R.id.cv_new_guanLi_ZBXX)
     CardView cvNewGuanLiZBXX;
+    @BindView(R.id.tv_new_guanLi_show_ssid)
+    public TextView tvNewGuanLiShowSsid;
 
     //设备URL及设备名和设备序列号
     private String myBaseUrl;
@@ -55,6 +59,7 @@ public class NewGuanLiActivity extends AppCompatActivity implements Consts {
     public GetSystemInfoHandler getSystemInfoHandler;
     private GetCapabilityHandler getCapabilityHandler;
     public GetWifiPasswordHandler getWifiPasswordHandler = new GetWifiPasswordHandler(new WeakReference<>(this));
+    public GetWifiStaSsidHandler getWifiStaSsidHandler = new GetWifiStaSsidHandler(new WeakReference<>(this));
     private String displayModelNumber;
     private String displaySerialNumber;
     private String displayFriendlyName;
@@ -66,7 +71,7 @@ public class NewGuanLiActivity extends AppCompatActivity implements Consts {
         setContentView(R.layout.activity_new_guan_li);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitleTextColor(ContextCompat.getColor(this,R.color.md_yellow_500));
+        toolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.md_yellow_500));
         setSupportActionBar(toolbar);
 
         if (getSupportActionBar() != null) {
@@ -84,7 +89,6 @@ public class NewGuanLiActivity extends AppCompatActivity implements Consts {
      */
     @Override
     protected void onResume() {
-        Logger.d("hahaahah");
         if (SPUtils.contains(this, "WIFI密码")) {
             String WIFIMiMa = String.valueOf(SPUtils.get(NewGuanLiActivity.this, "WIFI密码", ""));
             Logger.d(WIFIMiMa);
@@ -92,6 +96,11 @@ public class NewGuanLiActivity extends AppCompatActivity implements Consts {
             Logger.d("获取WIFI密码界面");
         } else {
             Logger.d("没有本地保存密码");
+        }
+
+        if (SPUtils.contains(this,"WIFIssid")) {
+           String wifiSsid = String.valueOf(SPUtils.get(NewGuanLiActivity.this,"WIFIssid",""));
+           tvNewGuanLiShowSsid.setText(wifiSsid);
         }
         super.onResume();
     }
@@ -123,32 +132,32 @@ public class NewGuanLiActivity extends AppCompatActivity implements Consts {
     }
 
     @SuppressLint("WrongConstant")
-    @OnClick({R.id.cv_new_guanLi_change_password, R.id.cv_new_guanLi_upgrad,R.id.cv_new_guanLi_ZBXX})
+    @OnClick({R.id.cv_new_guanLi_change_password, R.id.cv_new_guanLi_upgrad, R.id.cv_new_guanLi_ZBXX, R.id.cv_new_guanLi_change_hotspot})
     public void onClick(View v) {
         switch (v.getId()) {
-                //修改WiFi密码按钮
+            //修改WiFi密码按钮
             case R.id.cv_new_guanLi_change_password:
                 Intent intentXiuGai = new Intent(this, XiuGaiMiMaActivity.class);
                 intentXiuGai.putExtra(Consts.INTENT_deviceURL, myBaseUrl);
                 startActivity(intentXiuGai);
                 break;
 
-                //填写主板信息按钮
+            //填写主板信息按钮
             case R.id.cv_new_guanLi_ZBXX:
-                startActivity(new Intent(this,TianXieZhuBanXinXiActivity.class)
+                startActivity(new Intent(this, TianXieZhuBanXinXiActivity.class)
                         .setFlags(109).putExtra(INTENT_deviceURL, deviceIP));
                 break;
 
-                //软件升级按钮
+            //软件升级按钮
             case R.id.cv_new_guanLi_upgrad:
                 Intent intent;
-                if(displayModelNumber.equals(MT_cheJi_model_number)){
-                    intent = new Intent(this,CheckDeviceInfoActivity.class);
-                }else {
+                if (displayModelNumber.equals(MT_cheJi_model_number)) {
+                    intent = new Intent(this, CheckDeviceInfoActivity.class);
+                } else {
                     intent = new Intent(this, CheckDevVersionActivity.class);
                 }
                 //传入设备URL
-                intent.putExtra(INTENT_deviceURL,myBaseUrl);
+                intent.putExtra(INTENT_deviceURL, myBaseUrl);
                 //传入设备序列号
                 intent.putExtra(INTENT_display_serial_number, displaySerialNumber);
                 //传入设备别名
@@ -156,6 +165,63 @@ public class NewGuanLiActivity extends AppCompatActivity implements Consts {
                 //传入设备类型
                 intent.putExtra(INTENT_display_model_number, displayModelNumber);
                 startActivity(intent);
+                break;
+
+            case R.id.cv_new_guanLi_change_hotspot:
+                startActivity(new Intent(this, SetWifiStaSettingsActivity.class).putExtra(Consts.INTENT_deviceURL, deviceIP));
+                /*WifiStaSettingsJson setWifiStaSettingsJson = new WifiStaSettingsJson();
+                setWifiStaSettingsJson.setSsid(etNewGuanLiSsid.getText().toString());
+                setWifiStaSettingsJson.setPassword(etNewGuanLiHotspotPassword.getText().toString());
+                String ss = new GsonBuilder().create().toJson(setWifiStaSettingsJson, WifiStaSettingsJson.class);
+                //String ss = "{\"ssid\":\"Honor 6X\",\"password\":\"88888888\"}";
+                Logger.e(ss);
+                String url = "http://" + myBaseUrl.replaceAll(REG, "$1") + ":8199/set_wifi_sta_settings";
+
+                new Thread(() -> {
+                    try {
+                        Response response;
+                        response = OkHttpUtils
+                                .postString()
+                                .url(url)
+                                .content(ss)
+                                .mediaType(MediaType.parse("application/json; charset=utf-8"))
+                                .build()
+                                .execute();
+                        if (response.code() == 401) {
+                            Headers responseHeaders = response.headers();
+                            for (int i = 0; i < responseHeaders.size(); i++) {
+                                Logger.d(responseHeaders.name(i) + ": " + responseHeaders.value(i));
+                            }
+                            String authorizationHaderValue = DigestAuthenticationUtil
+                                    .startDigestPost(response.header("WWW-Authenticate"), "admin", "admin", "/set_wifi_sta_settings");
+                            OkHttpUtils
+                                    .postString()
+                                    .url(url)
+                                    .content(ss)
+                                    .addHeader("Authorization",
+                                            authorizationHaderValue)
+                                    .mediaType(MediaType.parse("application/json; charset=utf-8"))
+                                    .build()
+                                    .execute(new StringCallback() {
+                                        @Override
+                                        public void onError(Call call, Exception e, int id) {
+                                            //Toast.makeText(NewGuanLiActivity.this, "错误" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                            Snackbar.make(v,"热点修改失败！请重试！",Snackbar.LENGTH_LONG).show();
+                                        }
+
+                                        @Override
+                                        public void onResponse(String response, int id) {
+                                            Log.e("TAG",response);
+                                            //Toast.makeText(NewGuanLiActivity.this, "返回成功" + response, Toast.LENGTH_SHORT).show();
+                                            Snackbar.make(v,"热点修改成功！",Snackbar.LENGTH_LONG).show();
+                                        }
+                                    });
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                }).start();*/
                 break;
 
             default:
